@@ -1,0 +1,32 @@
+@layer components {
+    .footer-section {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .footer-links {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+
+        & a {
+            transition: color 400ms ease-in;
+            -webkit-transition: color 40ms ease-in;
+            -moz-transition: color 40ms ease-in;
+            -ms-transition: color 40ms ease-in;
+            -o-transition: color 40ms ease-in;
+        }
+
+        & a:hover {
+            color: var(--color-neutral-600);
+        }
+    }
+
+    .footer-headline {
+        font-size: 20px;
+        color: var(--color-neutral-950);
+        font-style: normal;
+        font-weight: 700;
+    }
+}

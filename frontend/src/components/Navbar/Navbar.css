@@ -1,0 +1,27 @@
+
+
+@layer base {
+    .menu-links {
+        text-transform: capitalize;
+        font-weight: 400;
+    }
+    .menu-links a {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+        &:after {
+            content: "";
+            display: inline-block;
+            width: 0;
+            height: 2px;
+            background-color: var(--color-primary-400);
+            transition: width 400ms ease-out;
+            -webkit-transition: width 400ms ease-out;
+            -moz-transition: width 400ms ease-out;
+            -ms-transition: width 400ms ease-out;
+            -o-transition: width 400ms ease-out;
+        }
+        &:hover {color: var(--color-primary-600);}
+        &:hover:after {width: 100%;}
+    }
+}

@@ -1,0 +1,165 @@
+@import "tailwindcss";
+
+@theme {
+	--color-primary-50: #FFEDE8;
+	--color-primary-100: #FFDBD0;
+	--color-primary-200: #FFB59D;
+	--color-primary-300: #FF8B64;
+	--color-primary-400: #F3632D;
+	--color-primary-500: #FF6B35;
+	--color-primary-600: #D04A14;
+	--color-primary-700: #AB3500;
+	--color-primary-800: #832600;
+	--color-primary-900: #5D1900;
+	--color-primary-950: #390C00;
+
+	--color-secondary-50: #1B1C1C;
+	--color-secondary-100: #303030;
+	--color-secondary-200: #474747;
+	--color-secondary-300: #5F5E5E;
+	--color-secondary-400: #787777;
+	--color-secondary-500: #333333;
+	--color-secondary-600: #929090;
+	--color-secondary-700: #ACABAA;
+	--color-secondary-800: #C8C6C6;
+	--color-secondary-900: #E4E2E1;
+	--color-secondary-950: #F3F0F0;
+
+	--color-tertiary-50: #001F28;
+	--color-tertiary-100: #003543;
+	--color-tertiary-200: #004E60;
+	--color-tertiary-300: #00677E;
+	--color-tertiary-400: #00829E;
+	--color-tertiary-500: #00A7CB;
+	--color-tertiary-600: #009EC0;
+	--color-tertiary-700: #32B9DE;
+	--color-tertiary-800: #59D5FB;
+	--color-tertiary-900: #B5EBFF;
+	--color-tertiary-950: #DCF5FF;
+
+
+	--color-neutral-50: #000000;
+	--color-neutral-100: #1A1C1C;
+	--color-neutral-200: #2F3131;
+	--color-neutral-300: #454747;
+	--color-neutral-400: #5D5F5F;
+	--color-neutral-500: #F5F5F5;
+	--color-neutral-600: #AAABAB;
+	--color-neutral-700: #C6C6C7;
+	--color-neutral-800: #E2E2E2;
+	--color-neutral-900: #F1F1F1;
+	--color-neutral-950: #FFFFFF;
+
+	--radius-sm: 0.25rem;
+	--radius-default: 0.5rem;
+	--radius-md: 0.75rem;
+	--radius-lg: 1rem;
+	--radius-xl: 1.5rem;
+	--radius-full: 9999px;
+
+	--spacing-base: 4px;	
+	--spacing-xs: 4px;	
+	--spacing-sm: 8px;	
+	--spacing-md: 16px;	
+	--spacing-lg: 24px;	
+	--spacing-xl: 32px;	
+	--spacing-gutter: 16px;	
+	--spacing-margin: 20px;
+
+
+
+	--font-headline: "Plus Jakarta Sans";
+	--font-body: "Inter";
+	--font-label: "Inter";
+}
+
+@layer base {
+	:root {font-size: 16px;}
+	body {
+		font-family: var(--font-body);	
+	}
+
+	/* 1. Use a more-intuitive box-sizing model */
+	*,
+	*::before,
+	*::after {
+		box-sizing: border-box;
+	}
+
+	/* 2. Remove default margin */
+	*:not(dialog) {
+		margin: 0;
+	}
+
+	/* 3. Enable keyword animations */
+	@media (prefers-reduced-motion: no-preference) {
+		html {
+			interpolate-size: allow-keywords;
+		}
+	}
+
+	body {
+		/* 4. Increase line-height */
+		line-height: 1.5;
+		/* 5. Improve text rendering */
+		-webkit-font-smoothing: antialiased;
+	}
+
+	/* 6. Improve media defaults */
+	img,
+	picture,
+	video,
+	canvas,
+	svg {
+		display: block;
+		max-width: 100%;
+	}
+
+	/* 7. Inherit fonts for form controls */
+	input,
+	button,
+	textarea,
+	select {
+		font: inherit;
+	}
+
+	/* 8. Avoid text overflows */
+	p,
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
+		overflow-wrap: break-word;
+	}
+
+	/* 9. Improve line wrapping */
+	@supports (text-wrap: pretty) {
+		p {
+			text-wrap: pretty;
+		}
+	}
+
+	@supports (text-wrap: balance) {
+
+		h1,
+		h2,
+		h3,
+		h4,
+		h5,
+		h6 {
+			text-wrap: balance;
+		}
+	}
+
+	/* 10. Create a root stacking context */
+	#root,
+	#__next {
+		isolation: isolate;
+	}
+	#root {max-width: 1440px;}
+	#root main {
+		min-height: 75vh;
+	}
+}

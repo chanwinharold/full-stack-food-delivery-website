@@ -1,0 +1,80 @@
+
+
+@layer components {
+    .btn {
+        display: inline-flex;
+        padding: 0.25rem 1.75rem;
+        margin: 0 0.25rem;
+        font-size: 14px;
+        font-weight: 500;
+        border: 2px solid;
+
+        text-transform: capitalize;
+
+        transition: all 250ms ease-out;
+        border-radius: var(--rounded-sm);
+        -webkit-border-radius: var(--rounded-sm);
+        -moz-border-radius: var(--rounded-sm);
+        -ms-border-radius: var(--rounded-sm);
+        -o-border-radius: var(--rounded-sm);
+        -webkit-transition: all 250ms ease-out;
+        -moz-transition: all 250ms ease-out;
+        -ms-transition: all 250ms ease-out;
+        -o-transition: all 250ms ease-out;
+    }
+
+    .btn-primary {
+        &:hover {
+            background-color: var(--color-primary-500);
+            border-color: var(--color-primary-500);
+        }
+        color: var(--color-neutral-950);
+        background-color: var(--color-primary-700);
+        border-color: var(--color-primary-700);
+}
+
+    .btn-secondary {
+        &:hover {
+            color: var(--color-neutral-950);
+            background-color: var(--color-secondary-50);
+            border-color: var(--color-secondary-50);
+        }
+
+        color: var(--color-neutral-50);
+        background-color: var(--color-secondary-900);
+        border-color: var(--color-secondary-900);
+    }
+
+    .btn-inverted {
+        &:hover {
+            color: var(--color-neutral-50);
+            background-color: var(--color-secondary-900);
+            border-color: var(--color-secondary-900);
+        }
+
+        color: var(--color-neutral-950);
+        background-color: var(--color-secondary-50);
+        border-color: var(--color-secondary-50);
+    }
+
+    .btn-outlined {
+        &:hover {
+            color: var(--color-neutral-950);
+            background-color: var(--color-secondary-50);
+            border-color: var(--color-secondary-50);
+        }
+
+        color: var(--color-neutral-50);
+        border-color: var(--color-secondary-50);
+    }
+
+    .btn-primary-outlined {
+        &:hover {
+            background-color: var(--color-primary-600);
+            color: var(--color-neutral-950);
+        }
+        background-color: unset;
+        color: var(--color-primary-600);
+        border-color: var(--color-primary-600);
+    }
+}
