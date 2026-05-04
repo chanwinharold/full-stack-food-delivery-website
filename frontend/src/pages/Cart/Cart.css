@@ -1,0 +1,9 @@
+
+
+@layer components {
+    .cart-container {
+        display: grid;
+        grid-template-columns: 3.5fr 1.5fr;
+        gap: 2rem;
+    }
+}
