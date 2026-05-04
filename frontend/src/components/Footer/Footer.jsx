@@ -41,7 +41,7 @@ function Footer() {
           </ul>
         </section>
       </div>
-      <hr className="text-neutral-800" />
+      <hr className="text-neutral-200" />
       <div className="px-8">© 2024 Tomato. All rights reserved.</div>
     </footer>
   );

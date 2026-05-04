@@ -43,6 +43,35 @@
         line-height: 1.8ch;
     }
     .hero-content p {
-        color: var(--color-primary-900);
+        color: var(--color-primary-950);
+    }
+
+    .on-hover {
+        img, span {
+            transition: all 300ms ease-in;
+        }
+        &:hover {
+            img {
+                border-color: var(--color-primary-600) !important;
+                opacity: 80%;
+            }
+            span {
+                color: var(--color-primary-800);
+            }
+        }
+    }
+
+    .dish-component {
+        display: grid;
+        width: 250px;
+        background-color: var(--color-neutral-950);
+        border-radius: var(--radius-sm);
+        overflow: hidden;
+    }
+    .dish-component > img {
+        width: 100%;
+        max-height: 150px;
+        object-fit: cover;
+        object-position: center;
     }
 }
