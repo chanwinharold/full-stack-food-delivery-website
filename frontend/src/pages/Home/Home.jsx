@@ -35,7 +35,7 @@ const HeroSection = () => {
           </p>
           <Button link={"/menu"} className={"inline-flex gap-x-2 btn-primary-outlined rounded-xl bg-neutral-950 hover:text-neutral-950 hover:bg-primary-600"}>
             View Menu
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right-icon lucide-arrow-right"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-arrow-right-icon lucide-arrow-right"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
           </Button>
         </div>
       </div>
@@ -59,8 +59,8 @@ const ExploreMenuSection = () => {
           </p>
         </div>
         <div className="flex gap-6">
-          {menu_list.map((menu) => (
-            <article className="grid place-items-center gap-2 on-hover cursor-pointer">
+          {menu_list.map((menu, index) => (
+            <article key={index} className="grid place-items-center gap-2 on-hover cursor-pointer">
               <img className="w-20 h-20 rounded-full border-3 border-transparent" src={menu.menu_image} alt="" />
               <span className="text-sm capitalize">{menu.menu_name}</span>
             </article>
@@ -81,7 +81,7 @@ const TopDishesSection = () => {
 
         <div className="flex gap-6 flex-wrap">
           {food_list.map(food => (
-            <article className="dish-component">
+            <article key={food._id} className="dish-component">
               <img src={food.image} alt={food.name} />
               <div className="grid px-3 py-3 gap-3 relative">
                 {/* Note */}
