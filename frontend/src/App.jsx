@@ -7,6 +7,8 @@ import Home from "./pages/Home/Home";
 import Cart from './pages/Cart/Cart';
 import Signup from "./pages/Signup/Signup";
 import Login from "./pages/Login/Login";
+import Checkout from "./pages/Checkout/Checkout";
+import Payment from "./pages/Payment/Payment";
 
 const router = createBrowserRouter([
   {
@@ -15,23 +17,37 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        Component: Home
+        Component: Home,
       },
       {
         path: "/cart",
-        Component: Cart
-      }
-    ]
+        Component: Cart,
+      },
+    ],
+  },
+  {
+    path: "",
+    Component: AppWithOnlyFooterLayout,
+    children: [
+      {
+        path: "/checkout",
+        Component: Checkout,
+      },
+    ],
   },
   {
     path: "/signup",
-    Component: Signup
+    Component: Signup,
   },
   {
     path: "/login",
-    Component: Login
+    Component: Login,
+  },
+  {
+    path: "/payment",
+    Component: Payment
   }
-])
+]);
 
 function App() {
   return (
@@ -47,6 +63,15 @@ function AppLayout() {
   return (
     <>
       <Navbar />
+      <Outlet />
+      <Footer />
+    </>
+  )
+}
+
+function AppWithOnlyFooterLayout() {
+  return (
+    <>
       <Outlet />
       <Footer />
     </>

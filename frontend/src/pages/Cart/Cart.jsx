@@ -17,7 +17,7 @@ function Cart() {
 
 export default Cart;
 
-export const Table = () => {
+const Table = () => {
   const foods_example = food_list.filter((x) => x._id in [1, 2, 3, 4, 5, 6, 7, 10]);
   const head_list = ["items", "title", "price", "quantity", "total", "remove"];
   return (
@@ -41,6 +41,7 @@ export const Table = () => {
 };
 
 const Item = ({ food }) => {
+  // eslint-disable-next-line react-hooks/purity
   const count = (Math.random() * 10).toFixed(0);
 
   return (
@@ -70,7 +71,7 @@ const Item = ({ food }) => {
       <td className="font-semibold">${food.price * count}</td>
       <td>
         <button>
-          <svg
+          <svg className="cursor-pointer hover:bg-neutral-800 w-6 transition-colors h-6 rounded-full"
             xmlns="http://www.w3.org/2000/svg"
             width="24"
             height="24"
@@ -87,7 +88,7 @@ const Item = ({ food }) => {
   );
 };
 
-export const Aside = () => {
+const Aside = () => {
   return (
     <aside className="grid gap-6 place-self-start">
       <div className="bg-neutral-950 grid gap-8 rounded-default p-6 h-min">
