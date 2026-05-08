@@ -7,7 +7,9 @@ import { Link } from "react-router";
 function Navbar() {
   return (
     <header className="h-16 px-6 flex justify-between gap-8 items-center border-b-3 border-b-neutral-800">
-      <img src={assets.logo} alt="Tomato logo" />
+      <a href="/">
+	  	<img src={assets.logo} alt="Tomato logo" />
+	  </a>
 
 	  <nav className="">
 		<ul className="flex items-center gap-6 menu-links">

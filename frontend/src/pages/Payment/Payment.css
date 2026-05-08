@@ -1,0 +1,42 @@
+@import "tailwindcss";
+
+
+@layer components {
+	.payment-container {
+		width: min(100%, 875px);
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		border-radius: var(--radius-default);
+		border: 1px solid var(--color-neutral-600);
+		margin-inline: auto;
+		margin-block: 4rem;
+		overflow: hidden;
+	}
+
+	.card-field {
+		display: grid;
+		gap: 0.5rem;
+
+		* {
+			border-color: var(--color-neutral-600); 
+			outline: none;
+		}
+		input {
+			padding-inline: 1rem; 
+			height: 40px;
+		}
+		span {
+			@apply text-sm font-semibold;
+		}
+	}
+
+	.card-grid {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		grid-template-rows: repeat(2, 1fr);
+	}
+
+	.scrollbar-hidden {
+		scrollbar-width: none;
+	}
+}

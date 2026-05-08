@@ -2,27 +2,28 @@
 
 
 @layer components {
-    .cart-container {
-        display: grid;
-        grid-template-columns: 3.5fr 1.5fr;
-        gap: 2rem;
-    }
+	.cart-container {
+		display: grid;
+		grid-template-columns: 3.5fr 1.5fr;
+		gap: 2rem;
+	}
 
-    .grid-form {
-        display: grid; gap: 1.5rem;
-        grid-template-columns: repeat(2, 1fr);
-        grid-template-rows: repeat(4, 1fr);
-    }
+	.grid-form {
+		display: grid;
+		gap: 1.5rem;
+		grid-template-columns: repeat(2, 1fr);
+		grid-template-rows: repeat(4, 1fr);
+	}
 
-    .form-field {
-        display: grid;
-        gap: 0.5rem;
+	.form-field {
+		display: grid;
+		gap: 0.5rem;
 
-        & span {
-            @apply text-sm font-semibold;    
-        }
-        & input {
-            @apply h-9 bg-neutral-900 rounded-sm focus:bg-neutral-950 pl-4;
-        }
-    }
+		& span {
+			@apply text-sm font-semibold;
+		}
+		& input {
+			@apply h-9 bg-neutral-900 rounded-sm focus:bg-neutral-950 pl-4;
+		}
+	}
 }

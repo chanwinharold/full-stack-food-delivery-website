@@ -57,13 +57,13 @@
 	--radius-xl: 1.5rem;
 	--radius-full: 9999px;
 
-	--spacing-base: 4px;	
-	--spacing-xs: 4px;	
-	--spacing-sm: 8px;	
-	--spacing-md: 16px;	
-	--spacing-lg: 24px;	
-	--spacing-xl: 32px;	
-	--spacing-gutter: 16px;	
+	--spacing-base: 4px;
+	--spacing-xs: 4px;
+	--spacing-sm: 8px;
+	--spacing-md: 16px;
+	--spacing-lg: 24px;
+	--spacing-xl: 32px;
+	--spacing-gutter: 16px;
 	--spacing-margin: 20px;
 
 
@@ -74,9 +74,12 @@
 }
 
 @layer base {
-	:root {font-size: 16px;}
+	:root {
+		font-size: 16px;
+	}
+
 	body {
-		font-family: var(--font-body);	
+		font-family: var(--font-body);
 		background-color: var(--color-neutral-900);
 	}
 
@@ -159,7 +162,12 @@
 	#__next {
 		isolation: isolate;
 	}
-	#root {max-width: 1440px; margin: auto;}
+
+	#root {
+		max-width: 1440px;
+		margin: auto;
+	}
+
 	#root main {
 		min-height: 75vh;
 	}
