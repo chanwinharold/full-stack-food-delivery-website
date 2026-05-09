@@ -9,6 +9,7 @@ import Signup from "./pages/Signup/Signup";
 import Login from "./pages/Login/Login";
 import Checkout from "./pages/Checkout/Checkout";
 import Payment from "./pages/Payment/Payment";
+import Menu from "./pages/Menu/Menu";
 
 const router = createBrowserRouter([
 	{
@@ -17,12 +18,16 @@ const router = createBrowserRouter([
 		children: [
 			{
 				index: true,
-				Component: Home,
+				Component: Home
 			},
 			{
 				path: "/cart",
-				Component: Cart,
+				Component: Cart
 			},
+			{
+				path: "/menu",
+				Component: Menu
+			}
 		],
 	},
 	{

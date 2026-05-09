@@ -101,7 +101,7 @@ const ExploreMenuSection = () => {
 };
 
 const TopDishesSection = () => {
-	const Foods = food_list.slice(1, 8)
+	const Foods = food_list.slice(1, 8);
 	return (
 		<section className="min-w-full py-16">
 			<div className="min-h-min grid place-items-start gap-8">
@@ -110,52 +110,58 @@ const TopDishesSection = () => {
 				</h1>
 
 				<div className="flex gap-6 flex-wrap">
-					{Foods.map((food) => (
-						<article key={food._id} className="dish-component">
-							<img src={food.image} alt={food.name} />
-							<div className="grid px-3 py-3 gap-3 relative">
-								{/* Note */}
-								<span className="absolute top-4 right-4 flex gap-1">
-									<svg
-										xmlns="http://www.w3.org/2000/svg"
-										width="12"
-										height="12"
-										viewBox="0 0 24 24"
-									>
-										<path
-											fill="#AB3500"
-											d="m5.825 21l1.625-7.025L2 9.25l7.2-.625L12 2l2.8 6.625l7.2.625l-5.45 4.725L18.175 21L12 17.275z"
-										/>
-									</svg>
-									<span className="text-[10px]">4.5</span>
-								</span>
-
-								{/* Titre + contenu */}
-								<div className="grid">
-									<strong className="text-headline text-lg">
-										{food.name}
-									</strong>
-									<span className="text-xs text-primary-900">
-										{food.description}
-									</span>
-								</div>
-								{/* prix */}
-								<div className="flex justify-between">
-									<em className="not-italic font-medium text-primary-600 text-xl transition-colors hover:text-primary-400">
-										${food.price}
-									</em>
-									<button
-										className="cursor-pointer w-6 h-6 inline-grid place-content-center bg-neutral-800 rounded-full transition-all hover:scale-125 hover:bg-neutral-900"
-										type={"button"}
-									>
-										+
-									</button>
-								</div>
-							</div>
-						</article>
+					{Foods.map((food, index) => (
+						<Dish key={index} food={food} />
 					))}
 				</div>
 			</div>
 		</section>
+	);
+};
+
+const Dish = ({ food }) => {
+	return (
+		<article key={food._id} className="dish-component">
+			<img src={food.image} alt={food.name} />
+			<div className="grid px-3 py-3 gap-3 relative">
+				{/* Note */}
+				<span className="absolute top-4 right-4 flex gap-1">
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						width="12"
+						height="12"
+						viewBox="0 0 24 24"
+					>
+						<path
+							fill="#AB3500"
+							d="m5.825 21l1.625-7.025L2 9.25l7.2-.625L12 2l2.8 6.625l7.2.625l-5.45 4.725L18.175 21L12 17.275z"
+						/>
+					</svg>
+					<span className="text-[10px]">4.5</span>
+				</span>
+
+				{/* Titre + contenu */}
+				<div className="grid">
+					<strong className="text-headline text-lg">
+						{food.name}
+					</strong>
+					<span className="text-xs text-primary-900">
+						{food.description}
+					</span>
+				</div>
+				{/* prix */}
+				<div className="flex justify-between">
+					<em className="not-italic font-medium text-primary-600 text-xl transition-colors hover:text-primary-400">
+						${food.price}
+					</em>
+					<button
+						className="cursor-pointer w-6 h-6 inline-grid place-content-center bg-neutral-800 rounded-full transition-all hover:scale-125 hover:bg-neutral-900"
+						type={"button"}
+					>
+						+
+					</button>
+				</div>
+			</div>
+		</article>
 	);
 };

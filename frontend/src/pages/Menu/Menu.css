@@ -1,0 +1,15 @@
+
+
+@layer components {
+
+	.dish-component {
+        display: grid;
+        width: 250px;
+        background-color: var(--color-neutral-950);
+        border-radius: var(--radius-sm);
+        overflow: hidden;
+    }
+	.shadow-btn {
+		box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+	}
+}
