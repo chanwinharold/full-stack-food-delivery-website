@@ -1,20 +1,31 @@
+import { useNavigate } from "react-router";
 import "./Button.css";
 
-function Button({ children, link, className }) {
+function Button({ children, link, className, type }) {
+	const Navigate = useNavigate();
+
+	const handleNavigate = () => {
+		Navigate(link)
+	}
+
 	return (
-		<a href={link} className={`btn ${className}`}>
+		<button type={type || "button"} onClick={!type && handleNavigate} className={`btn ${className}`}>
 			{children}
-		</a>
+		</button>
 	);
 }
 
 export default Button;
 
-import React from "react";
-
 export function BtnGoBack({to, className, children}) {
+	const Navigate = useNavigate();
+
+	const handleBackTo = () => {
+		Navigate(to)
+	}
+
 	return (
-		<a className={`inline-flex gap-2 items-center ${className}`} href={to}>
+		<button onClick={handleBackTo} className={`inline-flex gap-2 items-center cursor-pointer ${className}`}>
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
 				width="16"
@@ -31,6 +42,6 @@ export function BtnGoBack({to, className, children}) {
 				<path d="M19 12H5" />
 			</svg>
 			<span className="text-sm">{children}</span>
-		</a>
+		</button>
 	);
 }

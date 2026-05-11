@@ -1,0 +1,55 @@
+@import "tailwindcss";
+
+@layer base {
+	form.form-container {
+		box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+		border-radius: var(--radius-default);
+		padding: 3rem;
+		display: grid;
+		gap: 3rem;
+	}
+}
+
+@layer components {
+	.form-field {
+		display: grid;
+		gap: 0.5rem;
+
+		& span {
+			@apply text-sm font-semibold;
+		}
+		& input, & textarea {
+			@apply h-9 bg-neutral-800 rounded-sm focus:bg-neutral-950 pl-4 outline-none;
+		}
+	}
+
+	.info-container {
+		@apply flex gap-4;
+
+		& > span { @apply w-10 h-10 bg-neutral-800 rounded-full inline-grid place-content-center;}
+		& > div { @apply grid gap-1;
+			& > strong { @apply text-lg; }
+			& > span { @apply text-sm text-neutral-400; }
+		}
+	}
+
+	.icon-wrapper {
+		@apply w-10 h-10 bg-neutral-800 rounded-full inline-grid place-content-center;
+	}
+
+	.bg-circle {
+		/* Decorative blobs behind phones */
+
+		position: absolute;
+		width: 200px;
+		height: 200px;
+		top: -10%;
+		left: 75%;
+		overflow: hidden;
+
+		background: rgba(255, 107, 53, 0.5);
+		filter: blur(32px);
+		border-radius: 9999px;
+
+	}
+}

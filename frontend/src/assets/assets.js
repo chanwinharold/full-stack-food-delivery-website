@@ -4,6 +4,12 @@ import icon_search from "./icons/icon_search.svg";
 import icon_order from "./icons/icon_ordering.svg";
 import icon_delivery from "./icons/icon_delivery.svg";
 import icon_offers from "./icons/icon_offers.svg";
+import icon_visit_us from "./icons/icon_localisation.svg";
+import icon_call_us from "./icons/icon_phone.svg";
+import icon_email_us from "./icons/icon_mail.svg";
+import icon_camera from "./icons/icon_camera.svg";
+import icon_bird from "./icons/icon_bird.svg";
+import icon_play from "./icons/icon_play.svg";
 
 import menu_1 from "./images/menus/menu_1.png";
 import menu_2 from "./images/menus/menu_2.png";
@@ -53,6 +59,12 @@ import rating_starts from "./images/rating_starts.png";
 import hero from "./images/image_hero.png";
 
 export const assets = {
+	icon_camera,
+	icon_bird,
+	icon_play,
+	icon_visit_us,
+	icon_call_us,
+	icon_email_us,
 	icon_offers,
 	icon_delivery,
 	icon_order,
