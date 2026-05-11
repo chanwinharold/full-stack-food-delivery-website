@@ -15,6 +15,7 @@ function Navbar() {
 		<ul className="flex items-center gap-6 menu-links">
 			<li><a href={"/"}>home</a></li>
 			<li><a href={"/menu"}>menu</a></li>
+			<li><a href={"/order"}>my order</a></li>
 			<li><a href={"/mobile"}>mobile app</a></li>
 			<li><a href={"/contact"}>contact us</a></li>
 		</ul>
