@@ -1,5 +1,6 @@
 import { food_list, menu_list } from "../../assets/assets";
-import "./Menu.css"
+import "./Menu.css";
+import IconStar from "../../assets/components/IconStar";
 
 
 function Menu() {
@@ -79,17 +80,7 @@ const Dish = ({ food }) => {
 			<div className="grid px-3 py-3 gap-3 relative">
 				{/* Note */}
 				<span className="absolute top-4 right-4 flex gap-1">
-					<svg
-						xmlns="http://www.w3.org/2000/svg"
-						width="12"
-						height="12"
-						viewBox="0 0 24 24"
-					>
-						<path
-							fill="#AB3500"
-							d="m5.825 21l1.625-7.025L2 9.25l7.2-.625L12 2l2.8 6.625l7.2.625l-5.45 4.725L18.175 21L12 17.275z"
-						/>
-					</svg>
+					<IconStar />
 					<span className="text-[10px]">4.5</span>
 				</span>
 

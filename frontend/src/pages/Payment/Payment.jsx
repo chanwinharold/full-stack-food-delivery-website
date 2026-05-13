@@ -1,6 +1,8 @@
 import "./Payment.css";
 import Button, { BtnGoBack } from "../../components/Button/Button";
 import { food_list } from "../../assets/assets";
+import IconDish from '../../assets/components/IconDish';
+import IconLock from '../../assets/components/IconLock';
 
 
 function Payment() {
@@ -27,7 +29,7 @@ const OrderSummary = () => {
 						<span className="text-sm text-primary-900">order summary</span>
 					</div>
 					<div className="w-12 h-12 rounded-full bg-primary-400 inline-grid place-content-center">
-						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-utensils-icon lucide-utensils"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/></svg>
+						<IconDish />
 					</div>
 				</div>
 
@@ -144,22 +146,7 @@ const FormPayment = () => {
 				</label>
 
 				<Button link={"/"} className={"bg-tertiary-500 rounded-default inline-flex m-0 gap-2 items-center justify-center text-neutral-950 h-12 font-bold w-full"}>
-					<svg
-						xmlns="http://www.w3.org/2000/svg"
-						width="18"
-						height="18"
-						viewBox="0 0 24 24"
-						fill="none"
-						stroke="currentColor"
-						stroke-width="3"
-						stroke-linecap="round"
-						stroke-linejoin="round"
-						class="lucide lucide-lock-keyhole-icon lucide-lock-keyhole"
-					>
-						<circle cx="12" cy="16" r="1" />
-						<rect x="3" y="10" width="18" height="12" rx="2" />
-						<path d="M7 10V7a5 5 0 0 1 10 0v3" />
-					</svg>
+					<IconLock />
 					<span>Pay</span>
 					<span>${638.50}</span>
 				</Button>
