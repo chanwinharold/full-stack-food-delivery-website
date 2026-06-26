@@ -1,0 +1,8 @@
+### User creation
+POST {{host}}/auth/signup
+Content-Type: application/json
+
+{
+    "username": "test1",
+    "password": "azerty"
+}
