@@ -1,18 +1,18 @@
 from typing import Optional
-
+from pydantic import EmailStr
 from ..models import users as model
 from ..database.connection import get_connection
 
 
-def get_user_by_name(username_: str):
+def get_user_by_name_or_email(username_: str, email_: EmailStr):
     conn = get_connection()
     curs = conn.cursor()
 
     curs.execute("""
         SELECT * FROM USERS u
-            WHERE u.username = %s
+            WHERE u.username = %s OR u.email = %s
         """,
-        (username_, ))
+        (username_, email_))
     row = curs.fetchone()
     conn.close()
 
@@ -20,7 +20,24 @@ def get_user_by_name(username_: str):
         return model.User(*row)
     return None
 
-def create_user(username_: str, password_: str, email_: Optional[str], image_: Optional[str]):
+def get_user_by_email(email_: EmailStr):
+    conn = get_connection()
+    curs = conn.cursor()
+
+    curs.execute("""
+        SELECT * FROM users
+            WHERE email = %s
+        """,
+        (email_, ))
+    row = curs.fetchone()
+    conn.close()
+
+    if row:
+        return model.User(*row)
+    return None
+
+
+def create_user(username_: str, password_: str, email_: EmailStr, image_: Optional[str]):
     conn = get_connection()
     curs = conn.cursor()
 
