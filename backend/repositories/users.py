@@ -1,7 +1,7 @@
 from typing import Optional
 from pydantic import EmailStr
-from ..models import users as model
-from ..database.connection import get_connection
+from models import users as model
+from database.connection import get_connection
 
 
 def get_user_by_name_or_email(username_: str, email_: EmailStr):
@@ -29,6 +29,22 @@ def get_user_by_email(email_: EmailStr):
             WHERE email = %s
         """,
         (email_, ))
+    row = curs.fetchone()
+    conn.close()
+
+    if row:
+        return model.User(*row)
+    return None
+
+def get_user_by_id(user_id_: int):
+    conn = get_connection()
+    curs = conn.cursor()
+
+    curs.execute("""
+        SELECT * FROM users
+            WHERE id = %s
+        """,
+        (user_id_, ))
     row = curs.fetchone()
     conn.close()
 

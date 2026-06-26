@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Optional
+from typing import Optional, Any
 from pydantic import BaseModel, EmailStr
 
 #################################################
@@ -29,9 +29,13 @@ class UserSignupResponse(BaseModel):
     created_at: datetime
     image: Optional[str] = None
 
+class UserAuthMeResponse(BaseModel):
+    id: int
+    username: str
+    created_at: datetime
 
 class UserResponse(BaseModel):
-    data: UserSignupResponse | None
+    data: UserSignupResponse | UserAuthMeResponse | None
     detail: str
 
 
@@ -41,4 +45,4 @@ class UserResponse(BaseModel):
 
 class Token(BaseModel):
     user_id: int
-    exp: Optional[int] = None
+    exp: int = 0

@@ -1,8 +1,7 @@
-from fastapi import APIRouter, status, Response
-
-from ..core.security import JWT_EXPIRES_IN
-from ..schemas import users as schema
-from ..services.users import signup_service, login_service
+from fastapi import APIRouter, status, Response, Depends
+from core.security import JWT_EXPIRES_IN
+from schemas import users as schema
+from services.users import signup_service, login_service, get_current_user
 
 
 router = APIRouter(prefix="/auth", tags=["Authentification"])
@@ -27,3 +26,7 @@ def login(user_: schema.UserLoginRequest, response: Response):
     )
 
     return {"data": None, "detail" : "User logged in successfully"}
+
+@router.get("/me", response_model=schema.UserResponse)
+def get_me(current_user=Depends(get_current_user)):
+    return {"data": current_user, "detail": "User authenticated"}

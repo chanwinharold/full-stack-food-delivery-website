@@ -1,5 +1,5 @@
 import psycopg as pg
-from ..core.security import DB_NAME, DB_USER, DB_PORT, DB_HOST, DB_PASSWORD
+from core.security import DB_NAME, DB_USER, DB_PORT, DB_HOST, DB_PASSWORD
 
 
 def get_connection():

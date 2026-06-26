@@ -1,5 +1,5 @@
+from schemas import users as schema
 from datetime import datetime, UTC, timedelta
-from ..schemas.users import Token
 from pwdlib import PasswordHash
 import os, dotenv, jwt
 
@@ -23,7 +23,7 @@ def hash_password(password_: str) -> str:
 def verify_password(input_password_: str, true_password_: str) -> bool:
     return pwd.verify(input_password_, true_password_)
 
-def generate_token(token_: Token):
+def generate_token(token_: schema.Token):
     timestamp = (datetime.now(UTC) + timedelta(minutes=JWT_EXPIRES_IN)).timestamp()
     token_.exp = int(timestamp)
     payload_ = token_.model_dump()

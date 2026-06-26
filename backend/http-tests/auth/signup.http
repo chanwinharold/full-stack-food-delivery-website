@@ -3,8 +3,8 @@ POST {{host}}/auth/signup
 Content-Type: application/json
 
 {
-    "username": "test0",
-    "email": "test0@gmail.com",
+    "username": "test1",
+    "email": "test1@gmail.com",
     "password": "azerty"
 }
 
