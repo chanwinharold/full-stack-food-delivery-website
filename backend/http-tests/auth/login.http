@@ -1,0 +1,23 @@
+### Login to an account with valid credentials
+POST {{host}}/auth/login
+Content-Type: application/json
+
+{
+    "email": "test1@gmail.com",
+    "password": "azerty"
+}
+
+> {% client.log(response.cookies()); %}
+###
+
+
+### Login to an account with invalid credentials
+POST {{host}}/auth/login
+Content-Type: application/json
+
+{
+    "email": "test1@gmail.com",
+    "password": "az4erty"
+}
+
+###

@@ -1,0 +1,5 @@
+### Verify if user is authenticated
+GET {{host}}/auth/me
+Accept: application/json
+
+###
