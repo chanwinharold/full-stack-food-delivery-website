@@ -1,11 +1,33 @@
 import Button from '../../components/Button/Button';
+import Alert from "../../components/AlertPopup/Alert.jsx";
 import "./Signup.css";
 import IconClose from '../../assets/components/IconClose';
+import {apiRequest} from "../../services/api.js";
+import {useState} from "react";
 
 
 function Signup() {
-  return (
-		<form className="py-6 max-w-118.75 m-auto my-16 bg-neutral-950 rounded-default grid">
+	const [inputs, setInputs] = useState({})
+	const [Data, setData] = useState(null)
+	const [showAlert, setShowAlert] = useState(false)
+
+	const handleChange = (e) => {
+		const name = e.target.name;
+		const value = e.target.value;
+
+		setInputs(values => ({...values, [name]: value}))
+	}
+	const handleSubmit = async (e) => {
+		e.preventDefault()
+		const data = await apiRequest("/auth/signup", "POST", inputs)
+		console.log(data)
+		setData(data)
+		setShowAlert(true)
+	}
+
+	return (
+		<form onSubmit={handleSubmit} className="py-6 max-w-118.75 m-auto my-16 bg-neutral-950 rounded-default grid">
+			{showAlert ? <Alert status={Data.status} setter={setShowAlert}>{Data.detail}</Alert> : null}
 			<div className="px-6 pb-6 border-b border-neutral-800 flex items-center justify-between">
 				<h1 className="text-xl text-secondary-100 font-bold">
 					Sign Up
@@ -27,6 +49,11 @@ function Signup() {
 						name="username"
 						id="name"
 						placeholder="John Doe"
+						value={inputs.username}
+						onChange={handleChange}
+						required={true}
+						minLength={3}
+						maxLength={20}
 					/>
 				</div>
 				<div className="input-field">
@@ -36,6 +63,10 @@ function Signup() {
 						name="email"
 						id="email"
 						placeholder="john@example.com"
+						value={inputs.email}
+						onChange={handleChange}
+						required={true}
+						maxLength={50}
 					/>
 				</div>
 				<div className="input-field">
@@ -45,18 +76,24 @@ function Signup() {
 						name="password"
 						id="password"
 						placeholder="......"
+						value={inputs.password}
+						onChange={handleChange}
+						required={true}
+						minLength={5}
+						maxLength={20}
 					/>
 				</div>
 				<Button
 					className={
 						"w-full btn-primary inline-flex justify-center rounded-sm"
 					}
+					type={"submit"}
 				>
 					Create account
 				</Button>
 
 				<div className="flex gap-2 items-center text-sm text-secondary-500">
-					<input type="checkbox" name="privacy check" id="privacy" />
+					<input type="checkbox" name="privacy check" id="privacy" required={true}/>
 					<label htmlFor="privacy">
 						By continuing, I agree to the terms of use & privacy
 						policy.
@@ -71,7 +108,7 @@ function Signup() {
 				</a>
 			</div>
 		</form>
-  );
+	);
 }
 
 export default Signup
