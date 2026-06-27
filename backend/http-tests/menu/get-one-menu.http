@@ -1,0 +1,7 @@
+### Get all menus
+@id_= 1
+
+GET {{host}}/menus/{{id_}}
+Accept: application/json
+
+###
