@@ -1,0 +1,5 @@
+### GET all dishes
+GET {{host}}/dishes
+Accept: application/json
+
+###
