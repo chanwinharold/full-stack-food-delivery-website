@@ -1,0 +1,5 @@
+### Get all menus
+GET {{host}}/menus
+Accept: application/json
+
+###
