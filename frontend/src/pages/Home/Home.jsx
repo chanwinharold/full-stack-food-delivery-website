@@ -3,10 +3,17 @@ import "./Home.css";
 import { food_list, menu_list } from "../../assets/assets";
 import IconArrowRight from '../../assets/components/IconArrowRight';
 import IconStar from '../../assets/components/IconStar';
+import {useContext} from "react";
+import AlertContext from "../../contexts/AlertContext/AlertContext.js";
+import Alert from "../../components/AlertPopup/Alert.jsx";
 
 function Home() {
+	const { setShowAlert, showAlert, status, detail } = useContext(AlertContext)
+
 	return (
 		<main className="px-6 py-8">
+            {showAlert ? <Alert setter={setShowAlert} status={status}>{detail}</Alert> : null}
+
 			<HeroSection />
 			<ExploreMenuSection />
 			<hr className="text-neutral-800" />
