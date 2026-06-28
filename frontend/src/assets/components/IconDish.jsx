@@ -8,10 +8,10 @@ function IconDish() {
 			viewBox="0 0 24 24"
 			fill="none"
 			stroke="currentColor"
-			stroke-width="2.5"
-			stroke-linecap="round"
-			stroke-linejoin="round"
-			class="lucide lucide-utensils-icon lucide-utensils"
+			strokeWidth="2.5"
+			strokeLinecap="round"
+			strokeLinejoin="round"
+			className="lucide lucide-utensils-icon lucide-utensils"
 		>
 			<path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2" />
 			<path d="M7 2v20" />
