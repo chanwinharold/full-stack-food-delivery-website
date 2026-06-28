@@ -1,15 +1,22 @@
-import Button from '../../components/Button/Button';
-import Alert from "../../components/AlertPopup/Alert.jsx";
 import "./Signup.css";
+import Button from '../../components/Button/Button';
 import IconClose from '../../assets/components/IconClose';
 import {apiRequest} from "../../services/api.js";
-import {useState} from "react";
+import {useState, useContext} from "react";
+import {useNavigate} from "react-router";
+import AlertContext from "../../contexts/AlertContext/AlertContext.js";
+import Alert from "../../components/AlertPopup/Alert.jsx";
 
 
 function Signup() {
-	const [inputs, setInputs] = useState({})
-	const [Data, setData] = useState(null)
-	const [showAlert, setShowAlert] = useState(false)
+	const [inputs, setInputs] = useState({
+		username: "",
+		email: "",
+		password: ""
+	})
+	const [, setData] = useState(null)
+	const { setShowAlert, setStatus, setDetail, showAlert, status, detail } = useContext(AlertContext)
+	const navigate = useNavigate();
 
 	const handleChange = (e) => {
 		const name = e.target.name;
@@ -20,14 +27,18 @@ function Signup() {
 	const handleSubmit = async (e) => {
 		e.preventDefault()
 		const data = await apiRequest("/auth/signup", "POST", inputs)
-		console.log(data)
-		setData(data)
-		setShowAlert(true)
+		setData(data); setShowAlert(true); setStatus(data.status); setDetail(data.detail);
+
+		if (data.status === 201) {
+			navigate("/login")
+		}
 	}
 
 	return (
 		<form onSubmit={handleSubmit} className="py-6 max-w-118.75 m-auto my-16 bg-neutral-950 rounded-default grid">
-			{showAlert ? <Alert status={Data.status} setter={setShowAlert}>{Data.detail}</Alert> : null}
+
+			{showAlert ? <Alert setter={setShowAlert} status={status}>{detail}</Alert> : null}
+
 			<div className="px-6 pb-6 border-b border-neutral-800 flex items-center justify-between">
 				<h1 className="text-xl text-secondary-100 font-bold">
 					Sign Up

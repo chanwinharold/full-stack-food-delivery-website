@@ -1,6 +1,6 @@
-import { Outlet } from "react-router";
-import { createBrowserRouter } from "react-router";
+import { Outlet, createBrowserRouter } from "react-router";
 import { RouterProvider } from "react-router/dom";
+import AlertProvider from "./contexts/AlertContext/AlertProvider.jsx";
 
 import Navbar from "./components/Navbar/Navbar";
 import Footer from "./components/Footer/Footer";
@@ -74,9 +74,9 @@ const router = createBrowserRouter([
 
 function App() {
 	return (
-		<>
+		<AlertProvider>
 			<RouterProvider router={router} />
-		</>
+		</AlertProvider>
 	);
 }
 
