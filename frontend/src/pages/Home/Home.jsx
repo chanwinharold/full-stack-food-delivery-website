@@ -1,18 +1,19 @@
 import Button from "../../components/Button/Button";
 import "./Home.css";
-import { food_list, menu_list } from "../../assets/assets";
 import IconArrowRight from '../../assets/components/IconArrowRight';
 import IconStar from '../../assets/components/IconStar';
-import {useContext} from "react";
+import {useContext, useEffect, useState} from "react";
 import AlertContext from "../../contexts/AlertContext/AlertContext.js";
 import Alert from "../../components/AlertPopup/Alert.jsx";
+import {apiRequest} from "../../services/api.js";
+
 
 function Home() {
 	const { setShowAlert, showAlert, status, detail } = useContext(AlertContext)
 
 	return (
 		<main className="px-6 py-8">
-            {showAlert ? <Alert setter={setShowAlert} status={status}>{detail}</Alert> : null}
+			{showAlert ? <Alert setter={setShowAlert} status={status}>{detail}</Alert> : null}
 
 			<HeroSection />
 			<ExploreMenuSection />
@@ -59,6 +60,20 @@ const HeroSection = () => {
 };
 
 const ExploreMenuSection = () => {
+	const [Menus, setMenus] = useState([])
+
+	const handleGetMenus = async () => {
+		const menus = await apiRequest("/menus", "GET")
+		return menus.data
+	}
+
+	useEffect(() => {
+		handleGetMenus().then(res => {
+			setMenus(res)
+		})
+
+	}, []);
+
 	return (
 		<section className="min-w-full py-16">
 			<div className="min-h-min grid place-items-start gap-8">
@@ -74,18 +89,18 @@ const ExploreMenuSection = () => {
 					</p>
 				</div>
 				<div className="flex gap-6">
-					{menu_list.map((menu, index) => (
+					{Menus.map(({id, name, image}) => (
 						<article
-							key={index}
+							key={id}
 							className="grid place-items-center gap-2 on-hover cursor-pointer"
 						>
 							<img
 								className="w-20 h-20 rounded-full border-3 border-transparent"
-								src={menu.menu_image}
-								alt=""
+								src={`/src/assets/images/menus/${image}`}
+								alt={`${name} image`}
 							/>
 							<span className="text-sm capitalize">
-								{menu.menu_name}
+								{name}
 							</span>
 						</article>
 					))}
@@ -96,7 +111,19 @@ const ExploreMenuSection = () => {
 };
 
 const TopDishesSection = () => {
-	const Foods = food_list.slice(1, 8);
+	const [Foods, setFoods] = useState([])
+
+	const handleFoods = async () => {
+		const response = await apiRequest("/dishes", "GET")
+		return response.data
+	}
+
+	useEffect(() => {
+		handleFoods().then(res => {
+			setFoods(res)
+		})
+	}, []);
+
 	return (
 		<section className="min-w-full py-16">
 			<div className="min-h-min grid place-items-start gap-8">
@@ -105,8 +132,8 @@ const TopDishesSection = () => {
 				</h1>
 
 				<div className="flex gap-6 flex-wrap">
-					{Foods.map((food, index) => (
-						<Dish key={index} food={food} />
+					{Foods.map(f => (
+						<Dish key={f.id} food={f} />
 					))}
 				</div>
 			</div>
@@ -116,13 +143,13 @@ const TopDishesSection = () => {
 
 const Dish = ({ food }) => {
 	return (
-		<article key={food._id} className="dish-component">
-			<img src={food.image} alt={food.name} />
+		<article className="dish-component">
+			<img src={`/src/assets/images/foods/${food.image}`} alt={`${food.name} image`} />
 			<div className="grid px-3 py-3 gap-3 relative">
 				{/* Note */}
 				<span className="absolute top-4 right-4 flex gap-1">
 					<IconStar />
-					<span className="text-[10px]">4.5</span>
+					<span className="text-[10px]">{food.stars}</span>
 				</span>
 
 				{/* Titre + contenu */}

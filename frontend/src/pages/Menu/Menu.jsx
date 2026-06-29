@@ -1,10 +1,31 @@
-import { food_list, menu_list } from "../../assets/assets";
 import "./Menu.css";
 import IconStar from "../../assets/components/IconStar";
+import {useEffect, useState} from "react";
+import {apiRequest} from "../../services/api.js";
 
 
 function Menu() {
-	const Foods = food_list.slice(18, 26)
+
+	const [Menus, setMenus] = useState([])
+	const [Foods, setFoods] = useState([])
+
+	const handleMenus = async () => {
+		const response = await apiRequest("/menus", "GET")
+		return response.data
+	}
+	const handleFoods = async () => {
+		const response = await apiRequest("/dishes", "GET")
+		return response.data
+	}
+
+	useEffect(() => {
+		handleMenus().then(res => {
+			setMenus(res)
+		})
+		handleFoods().then(res => {
+			setFoods(res)
+		})
+	}, []);
 
 	return (
 		<main className="px-6 py-8 flex flex-col gap-8">
@@ -21,19 +42,18 @@ function Menu() {
 			</div>
 
 			<div className="flex gap-6">
-				{menu_list.map((menu, index) => (
-					<a href={`/menu?id=${index}`}>
+				{Menus.map(({id, name, image}) => (
+					<a key={id} href={`/menu?id=${id}`}>
 						<article
-							key={index}
 							className="grid place-items-center gap-2 on-hover cursor-pointer"
 						>
 							<img
 								className="w-16 h-16 rounded-full border-3 border-transparent"
-								src={menu.menu_image}
-								alt=""
+								src={`/src/assets/images/menus/${image}`}
+								alt={`${name} image`}
 							/>
 							<span className="text-sm capitalize">
-								{menu.menu_name}
+								{name}
 							</span>
 						</article>
 					</a>
@@ -41,8 +61,8 @@ function Menu() {
 			</div>
 
 			<div className="flex gap-6 flex-wrap">
-				{Foods.map((food, index) => (
-					<Dish key={index} food={food} />
+				{Foods.map(f => (
+					<Dish key={f.id} food={f} />
 				))}
 			</div>
 		</main>
@@ -55,11 +75,11 @@ export default Menu;
 const Dish = ({ food }) => {
 	let btnType = true
 	return (
-		<article key={food._id} className="dish-component">
+		<article className="dish-component">
 			<div className="relative">
 				<img
 					className="w-full max-h-37.5 object-cover object-center"
-					src={food.image}
+					src={`/src/assets/images/foods/${food.image}`}
 					alt={food.name}
 				/>
 				{btnType ? (
@@ -81,7 +101,7 @@ const Dish = ({ food }) => {
 				{/* Note */}
 				<span className="absolute top-4 right-4 flex gap-1">
 					<IconStar />
-					<span className="text-[10px]">4.5</span>
+					<span className="text-[10px]">{food.stars}</span>
 				</span>
 
 				{/* Titre + contenu */}

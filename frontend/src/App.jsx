@@ -1,6 +1,5 @@
 import { Outlet, createBrowserRouter } from "react-router";
 import { RouterProvider } from "react-router/dom";
-import AlertProvider from "./contexts/AlertContext/AlertProvider.jsx";
 
 import Navbar from "./components/Navbar/Navbar";
 import Footer from "./components/Footer/Footer";
@@ -15,6 +14,9 @@ import Menu from "./pages/Menu/Menu";
 import Order from "./pages/Order/Order";
 import Mobile from "./pages/Mobile/Mobile";
 import Contact from "./pages/Contact/Contact";
+
+import AuthProvider from "./contexts/AuthContext/AuthProvider.jsx";
+import AlertProvider from "./contexts/AlertContext/AlertProvider.jsx";
 
 
 const router = createBrowserRouter([
@@ -74,9 +76,11 @@ const router = createBrowserRouter([
 
 function App() {
 	return (
-		<AlertProvider>
-			<RouterProvider router={router} />
-		</AlertProvider>
+		<AuthProvider>
+			<AlertProvider>
+				<RouterProvider router={router} />
+			</AlertProvider>
+		</AuthProvider>
 	);
 }
 
