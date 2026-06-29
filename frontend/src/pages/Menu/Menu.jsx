@@ -5,9 +5,9 @@ import {apiRequest} from "../../services/api.js";
 
 
 function Menu() {
-
 	const [Menus, setMenus] = useState([])
 	const [Foods, setFoods] = useState([])
+	const [currentID, setcurrentID] = useState(null)
 
 	const handleMenus = async () => {
 		const response = await apiRequest("/menus", "GET")
@@ -16,6 +16,12 @@ function Menu() {
 	const handleFoods = async () => {
 		const response = await apiRequest("/dishes", "GET")
 		return response.data
+	}
+	const handleChooseMenu = (id) => {
+		setcurrentID(id)
+		apiRequest(`/menus/${id}`, "GET").then(res => {
+			setFoods(res.data)
+		})
 	}
 
 	useEffect(() => {
@@ -43,20 +49,20 @@ function Menu() {
 
 			<div className="flex gap-6">
 				{Menus.map(({id, name, image}) => (
-					<a key={id} href={`/menu?id=${id}`}>
-						<article
-							className="grid place-items-center gap-2 on-hover cursor-pointer"
-						>
-							<img
-								className="w-16 h-16 rounded-full border-3 border-transparent"
-								src={`/src/assets/images/menus/${image}`}
-								alt={`${name} image`}
-							/>
-							<span className="text-sm capitalize">
-								{name}
-							</span>
-						</article>
-					</a>
+					<article
+						key={id}
+						className={`grid place-items-center gap-2 on-hover cursor-pointer ${currentID === id ? "on-focus" : ""}`}
+						onClick={() => handleChooseMenu(id)}
+					>
+						<img
+							className="w-16 h-16 rounded-full border-3 border-transparent"
+							src={`/src/assets/images/menus/${image}`}
+							alt={`${name} image`}
+						/>
+						<span className="text-sm capitalize">
+							{name}
+						</span>
+					</article>
 				))}
 			</div>
 
@@ -73,7 +79,9 @@ export default Menu;
 
 
 const Dish = ({ food }) => {
-	let btnType = true
+	let [btnType, setBtnType] = useState(true)
+	let [count, setCount] = useState(0)
+
 	return (
 		<article className="dish-component">
 			<div className="relative">
@@ -86,14 +94,15 @@ const Dish = ({ food }) => {
 					<button
 						className="absolute bottom-3 right-3 cursor-pointer w-8 h-8 inline-grid place-content-center bg-neutral-950 shadow-btn rounded-full transition-all hover:scale-125 hover:bg-neutral-900"
 						type={"button"}
+						onClick={() => setBtnType(v => !v)}
 					>
 						+
 					</button>
 				) : (
 					<div className="flex justify-between px-1 items-center bg-neutral-950 w-25 h-8 rounded-full absolute bottom-3 right-3">
-						<button className="cursor-pointer hover:scale-125 text-red-500 text-xl w-6 h-6 inline-grid place-content-center hover:bg-neutral-900 hover:shadow-btn rounded-full transition-all" type="button">-</button>
-						<span className="text-sm">2</span>
-						<button className="cursor-pointer hover:scale-125 text-green-500 text-xl w-6 h-6 inline-grid place-content-center hover:bg-neutral-900 hover:shadow-btn rounded-full transition-all" type="button">+</button>
+						<button onClick={() => setCount(v => v-1)} className="cursor-pointer hover:scale-125 text-red-500 text-xl w-6 h-6 inline-grid place-content-center hover:bg-neutral-900 hover:shadow-btn rounded-full transition-all" type="button">-</button>
+						<span className="text-sm">{count}</span>
+						<button onClick={() => setCount(v => v+1)} className="cursor-pointer hover:scale-125 text-green-500 text-xl w-6 h-6 inline-grid place-content-center hover:bg-neutral-900 hover:shadow-btn rounded-full transition-all" type="button">+</button>
 					</div>
 				)}
 			</div>

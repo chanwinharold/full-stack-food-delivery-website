@@ -114,7 +114,7 @@ const TopDishesSection = () => {
 	const [Foods, setFoods] = useState([])
 
 	const handleFoods = async () => {
-		const response = await apiRequest("/dishes", "GET")
+		const response = await apiRequest("/dishes/top", "GET")
 		return response.data
 	}
 
