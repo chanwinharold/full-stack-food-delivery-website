@@ -1,0 +1,5 @@
+### GET top dishes
+GET {{host}}/dishes/top
+Accept: application/json
+
+###
