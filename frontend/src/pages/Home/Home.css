@@ -28,7 +28,7 @@
 
     .hero-content {
         z-index: 5;
-        
+
         max-width: 550px;
         height: min-content;
         display: grid;
@@ -58,6 +58,15 @@
             span {
                 color: var(--color-primary-800);
             }
+        }
+    }
+    .on-focus {
+        img {
+            border-color: var(--color-primary-600) !important;
+            opacity: 80%;
+        }
+        span {
+            color: var(--color-primary-800);
         }
     }
 
