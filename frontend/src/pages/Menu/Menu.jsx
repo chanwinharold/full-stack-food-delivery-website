@@ -1,7 +1,9 @@
 import "./Menu.css";
 import IconStar from "../../assets/components/IconStar";
-import {useEffect, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import {apiRequest} from "../../services/api.js";
+import useIncrement from "../../hooks/useIncrement.js";
+import CartContext from "../../contexts/CartContext/CartContext.js";
 
 
 function Menu() {
@@ -79,9 +81,23 @@ export default Menu;
 
 
 const Dish = ({ food }) => {
-	let [btnType, setBtnType] = useState(true)
-	let [count, setCount] = useState(0)
+	let [count, setIncrement, setDecrement] = useIncrement(null)
+	let {Cart, setQuantity, setRemove} = useContext(CartContext);
 
+	const handleIncrement = (dish) => {
+		setIncrement()
+		setQuantity(dish, count)
+	}
+	const handleDecrement = (dish) => {
+		setDecrement()
+		setQuantity(dish, count)
+
+		if (!count) {
+			setRemove(dish)
+		}
+	}
+
+	console.log(Cart)
 	return (
 		<article className="dish-component">
 			<div className="relative">
@@ -90,19 +106,13 @@ const Dish = ({ food }) => {
 					src={`/src/assets/images/foods/${food.image}`}
 					alt={food.name}
 				/>
-				{btnType ? (
-					<button
-						className="absolute bottom-3 right-3 cursor-pointer w-8 h-8 inline-grid place-content-center bg-neutral-950 shadow-btn rounded-full transition-all hover:scale-125 hover:bg-neutral-900"
-						type={"button"}
-						onClick={() => setBtnType(v => !v)}
-					>
-						+
-					</button>
+				{!count ? (
+					<button className="absolute bottom-3 right-3 cursor-pointer w-8 h-8 inline-grid place-content-center bg-neutral-950 shadow-btn rounded-full transition-all hover:scale-125 hover:bg-neutral-900" type={"button"} onClick={setIncrement}>+</button>
 				) : (
 					<div className="flex justify-between px-1 items-center bg-neutral-950 w-25 h-8 rounded-full absolute bottom-3 right-3">
-						<button onClick={() => setCount(v => v-1)} className="cursor-pointer hover:scale-125 text-red-500 text-xl w-6 h-6 inline-grid place-content-center hover:bg-neutral-900 hover:shadow-btn rounded-full transition-all" type="button">-</button>
+						<button onClick={() => handleDecrement(food)} className="cursor-pointer hover:scale-125 text-red-500 text-xl w-6 h-6 inline-grid place-content-center hover:bg-neutral-900 hover:shadow-btn rounded-full transition-all" type="button">-</button>
 						<span className="text-sm">{count}</span>
-						<button onClick={() => setCount(v => v+1)} className="cursor-pointer hover:scale-125 text-green-500 text-xl w-6 h-6 inline-grid place-content-center hover:bg-neutral-900 hover:shadow-btn rounded-full transition-all" type="button">+</button>
+						<button onClick={() => handleIncrement(food)} className="cursor-pointer hover:scale-125 text-green-500 text-xl w-6 h-6 inline-grid place-content-center hover:bg-neutral-900 hover:shadow-btn rounded-full transition-all" type="button">+</button>
 					</div>
 				)}
 			</div>
