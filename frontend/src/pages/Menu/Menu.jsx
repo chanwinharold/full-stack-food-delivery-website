@@ -81,23 +81,20 @@ export default Menu;
 
 
 const Dish = ({ food }) => {
-	let [count, setIncrement, setDecrement] = useIncrement(null)
-	let {Cart, setQuantity, setRemove} = useContext(CartContext);
+	const [count, setIncrement, setDecrement] = useIncrement(null)
+	const {addToCart, removeFromCart} = useContext(CartContext);
 
-	const handleIncrement = (dish) => {
-		setIncrement()
-		setQuantity(dish, count)
-	}
-	const handleDecrement = (dish) => {
-		setDecrement()
-		setQuantity(dish, count)
-
-		if (!count) {
-			setRemove(dish)
+	const handlers = {
+		increment : () => {
+			addToCart(food.id);
+			setIncrement();
+		},
+		decrement: () => {
+			removeFromCart(food.id);
+			setDecrement();
 		}
 	}
 
-	console.log(Cart)
 	return (
 		<article className="dish-component">
 			<div className="relative">
@@ -107,12 +104,12 @@ const Dish = ({ food }) => {
 					alt={food.name}
 				/>
 				{!count ? (
-					<button className="absolute bottom-3 right-3 cursor-pointer w-8 h-8 inline-grid place-content-center bg-neutral-950 shadow-btn rounded-full transition-all hover:scale-125 hover:bg-neutral-900" type={"button"} onClick={setIncrement}>+</button>
+					<button className="absolute bottom-3 right-3 cursor-pointer w-8 h-8 inline-grid place-content-center bg-neutral-950 shadow-btn rounded-full transition-all hover:scale-125 hover:bg-neutral-900" type={"button"} onClick={handlers.increment}>+</button>
 				) : (
 					<div className="flex justify-between px-1 items-center bg-neutral-950 w-25 h-8 rounded-full absolute bottom-3 right-3">
-						<button onClick={() => handleDecrement(food)} className="cursor-pointer hover:scale-125 text-red-500 text-xl w-6 h-6 inline-grid place-content-center hover:bg-neutral-900 hover:shadow-btn rounded-full transition-all" type="button">-</button>
+						<button onClick={handlers.decrement} className="cursor-pointer hover:scale-125 text-red-500 text-xl w-6 h-6 inline-grid place-content-center hover:bg-neutral-900 hover:shadow-btn rounded-full transition-all" type="button">-</button>
 						<span className="text-sm">{count}</span>
-						<button onClick={() => handleIncrement(food)} className="cursor-pointer hover:scale-125 text-green-500 text-xl w-6 h-6 inline-grid place-content-center hover:bg-neutral-900 hover:shadow-btn rounded-full transition-all" type="button">+</button>
+						<button onClick={handlers.increment} className="cursor-pointer hover:scale-125 text-green-500 text-xl w-6 h-6 inline-grid place-content-center hover:bg-neutral-900 hover:shadow-btn rounded-full transition-all" type="button">+</button>
 					</div>
 				)}
 			</div>

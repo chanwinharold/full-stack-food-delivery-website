@@ -1,8 +1,9 @@
-import {useState} from "react";
+import {useContext} from "react";
+import CartContext from "../contexts/CartContext/CartContext.js";
 
 
 const useCart = () => {
-    const [Cart, setCart] = useState([]);
+    const {Cart, setCart} = useContext(CartContext);
 
     const findDish = (dish_) => {
         for (let i = 0; i < Cart.length; i++) {
@@ -41,7 +42,7 @@ const useCart = () => {
         }
     }
 
-    return [Cart, setQuantity, setRemove]
+    return {setQuantity, setRemove}
 }
 
 export default useCart;
