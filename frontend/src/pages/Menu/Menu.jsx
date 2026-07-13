@@ -7,9 +7,9 @@ import CartContext from "../../contexts/CartContext/CartContext.js";
 
 
 function Menu() {
-	const [Menus, setMenus] = useState([])
-	const [Foods, setFoods] = useState([])
-	const [currentID, setcurrentID] = useState(null)
+	const [Menus, setMenus] = useState([]);
+	const [Foods, setFoods] = useState([]);
+	const [currentID, setcurrentID] = useState(null);
 
 	const handleMenus = async () => {
 		const response = await apiRequest("/menus", "GET")
@@ -81,8 +81,15 @@ export default Menu;
 
 
 const Dish = ({ food }) => {
-	const [count, setIncrement, setDecrement] = useIncrement(null)
+	const {Cart} = useContext(CartContext);
+	const [count, setIncrement, setDecrement, setCount] = useIncrement(null)
 	const {addToCart, removeFromCart} = useContext(CartContext);
+
+	useEffect(() => {
+		if (Cart[food.id]) {
+			setCount(Cart[food.id].quantity)
+		}
+	}, [Cart, count, food.id, setCount]);
 
 	const handlers = {
 		increment : () => {

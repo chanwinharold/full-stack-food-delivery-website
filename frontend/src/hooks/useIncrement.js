@@ -18,7 +18,7 @@ const useIncrement = (init) => {
         setCount(v => v-1)
     }
 
-    return [count, setIncrement, setDecrement]
+    return [count, setIncrement, setDecrement, setCount]
 }
 
 export default useIncrement;
