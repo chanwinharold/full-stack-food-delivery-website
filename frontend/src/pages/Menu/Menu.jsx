@@ -1,29 +1,20 @@
 import "./Menu.css";
 import IconStar from "../../assets/components/IconStar";
 import {useContext, useEffect, useState} from "react";
-import {apiRequest} from "../../services/api.js";
-import useIncrement from "../../hooks/useIncrement.js";
+import {handleFoods, handleMenus} from "../../services/api.js";
 import CartContext from "../../contexts/CartContext/CartContext.js";
+import MenuContext from "../../contexts/MenuContext/MenuContext.js";
 
 
 function Menu() {
-	const [Menus, setMenus] = useState([]);
-	const [Foods, setFoods] = useState([]);
 	const [currentID, setcurrentID] = useState(null);
+	const [FoodByCategory, setFoodByCategory] = useState([]);
+	const {Menus, Foods, setFoods, setMenus} = useContext(MenuContext);
 
-	const handleMenus = async () => {
-		const response = await apiRequest("/menus", "GET")
-		return response.data
-	}
-	const handleFoods = async () => {
-		const response = await apiRequest("/dishes", "GET")
-		return response.data
-	}
 	const handleChooseMenu = (id) => {
+		const currentMenuFoods = Foods.filter(f => f.menu_id === id)
+		setFoodByCategory(currentMenuFoods)
 		setcurrentID(id)
-		apiRequest(`/menus/${id}`, "GET").then(res => {
-			setFoods(res.data)
-		})
 	}
 
 	useEffect(() => {
@@ -69,7 +60,7 @@ function Menu() {
 			</div>
 
 			<div className="flex gap-6 flex-wrap">
-				{Foods.map(f => (
+				{(FoodByCategory.length ? FoodByCategory : Foods).map(f => (
 					<Dish key={f.id} food={f} />
 				))}
 			</div>
@@ -81,25 +72,11 @@ export default Menu;
 
 
 const Dish = ({ food }) => {
-	const {Cart} = useContext(CartContext);
-	const [count, setIncrement, setDecrement, setCount] = useIncrement(null)
-	const {addToCart, removeFromCart} = useContext(CartContext);
-
-	useEffect(() => {
-		if (Cart[food.id]) {
-			setCount(Cart[food.id].quantity)
-		}
-	}, [Cart, count, food.id, setCount]);
+	const {Cart, addToCart, removeFromCart} = useContext(CartContext);
 
 	const handlers = {
-		increment : () => {
-			addToCart(food.id);
-			setIncrement();
-		},
-		decrement: () => {
-			removeFromCart(food.id);
-			setDecrement();
-		}
+		increment : () => addToCart(food.id),
+		decrement: () => removeFromCart(food.id)
 	}
 
 	return (
@@ -110,12 +87,12 @@ const Dish = ({ food }) => {
 					src={`/src/assets/images/foods/${food.image}`}
 					alt={food.name}
 				/>
-				{!count ? (
+				{!Cart.find(f => f.id === food.id) ? (
 					<button className="absolute bottom-3 right-3 cursor-pointer w-8 h-8 inline-grid place-content-center bg-neutral-950 shadow-btn rounded-full transition-all hover:scale-125 hover:bg-neutral-900" type={"button"} onClick={handlers.increment}>+</button>
 				) : (
 					<div className="flex justify-between px-1 items-center bg-neutral-950 w-25 h-8 rounded-full absolute bottom-3 right-3">
 						<button onClick={handlers.decrement} className="cursor-pointer hover:scale-125 text-red-500 text-xl w-6 h-6 inline-grid place-content-center hover:bg-neutral-900 hover:shadow-btn rounded-full transition-all" type="button">-</button>
-						<span className="text-sm">{count}</span>
+						<span className="text-sm">{Cart.find(f => f.id === food.id).quantity}</span>
 						<button onClick={handlers.increment} className="cursor-pointer hover:scale-125 text-green-500 text-xl w-6 h-6 inline-grid place-content-center hover:bg-neutral-900 hover:shadow-btn rounded-full transition-all" type="button">+</button>
 					</div>
 				)}

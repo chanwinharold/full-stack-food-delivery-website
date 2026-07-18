@@ -3,8 +3,7 @@ import Button from "../../components/Button/Button";
 import "./Cart.css";
 import {useContext, useEffect, useState} from "react";
 import CartContext from "../../contexts/CartContext/CartContext.js";
-import {apiRequest} from "../../services/api.js";
-import {handleCartItems} from "../../services/cart.js";
+
 
 function Cart() {
 	const [total, setTotal] = useState(0);
@@ -26,7 +25,14 @@ export default Cart;
 const Table = ({states}) => {
 	const {setTotal} = states;
 	const {Cart} = useContext(CartContext);
-	const [CartItems, setCartItems] = useState([])
+
+	useEffect(() => {
+		let total = 0;
+		Cart.forEach(c => {
+			total += c.price * c.quantity;
+		})
+		setTotal(total)
+	}, [Cart, setTotal]);
 
 	const head_list = [
 		"items",
@@ -36,28 +42,6 @@ const Table = ({states}) => {
 		"total",
 		"remove",
 	];
-
-	const handleFoods = async () => {
-		const response = await apiRequest("/dishes", "GET")
-		return response.data
-	}
-
-	useEffect(() => {
-		handleFoods().then(res => {
-			handleCartItems(Cart, res).then(cartItems => {
-				setCartItems(cartItems)
-			})
-		})
-	}, [Cart]);
-
-	useEffect(() => {
-		let total = 0;
-		CartItems.forEach(c => {
-			total += c.food.price * c.quantity;
-		})
-		setTotal(total)
-	}, [CartItems, setTotal]);
-
 
 	return (
 		<section className="bg-neutral-950 rounded-default overflow-hidden pb-4 h-min border border-neutral-600">
@@ -70,8 +54,8 @@ const Table = ({states}) => {
 				</tr>
 				</thead>
 				<tbody>
-				{CartItems.length > 0 && CartItems.map(cartItem => (
-					<Item key={cartItem.id} food={cartItem.food} quantity={cartItem.quantity} />
+				{Cart.length > 0 && Cart.map(cartItem => (
+					<Item key={cartItem.id} food={cartItem} />
 				))}
 				</tbody>
 			</table>
@@ -79,7 +63,7 @@ const Table = ({states}) => {
 	);
 };
 
-const Item = ({ food, quantity }) => {
+const Item = ({ food }) => {
 
 	return (
 		<tr className="border-t border-t-neutral-800">
@@ -99,13 +83,13 @@ const Item = ({ food, quantity }) => {
 					<span className="cursor-pointer w-8 h-8 inline-grid place-content-center bg-neutral-800 rounded-full transition-all hover:scale-125 hover:bg-neutral-900">
 						-
 					</span>
-					<span>{quantity}</span>
+					<span>{food.quantity}</span>
 					<span className="cursor-pointer w-8 h-8 inline-grid place-content-center bg-primary-600 rounded-full transition-all hover:scale-125 hover:bg-primary-400">
 						+
 					</span>
 				</div>
 			</td>
-			<td className="font-semibold">${food.price * quantity}</td>
+			<td className="font-semibold">${food.price * food.quantity}</td>
 			<td>
 				<button>
 					<IconClose />

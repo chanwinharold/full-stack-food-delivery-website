@@ -1,34 +1,49 @@
 import CartContext from "./CartContext.js";
-import {useState} from "react";
+import {useContext, useState} from "react";
+import MenuContext from "../MenuContext/MenuContext.js";
 
 
 const CartProvider = ({children}) => {
-    const [Cart, setCart] = useState({});
+    const [Cart, setCart] = useState([]);
+    const {Foods} = useContext(MenuContext);
 
     const addToCart = (foodId) => {
-        const CartCopy = structuredClone(Cart)
-        if (CartCopy[foodId]) {
-            if (CartCopy[foodId]["quantity"]) {
-                CartCopy[foodId]["quantity"] += 1;
-            } else {
-                CartCopy[foodId] = {"quantity": 1}
-            }
-        }
-        else {
-            CartCopy[foodId] = {"quantity": 1}
-        }
+        const currentFood = Cart.find(f => f.id === foodId);
 
-        setCart(CartCopy);
-    }
+        if (currentFood) {
+            setCart(prevState =>
+                prevState.map(item =>
+                    item.id === foodId
+                        ? { ...item, quantity: item.quantity + 1 }
+                        : item
+                )
+            );
+        } else {
+            const food = Foods.find(f => f.id === foodId);
+
+            if (!food) return;
+
+            setCart(prevState => [
+                ...prevState,
+                {
+                    ...food,
+                    quantity: 1
+                }
+            ]);
+        }
+    };
 
     const removeFromCart = (foodId) => {
-        const CartCopy = structuredClone(Cart)
-        CartCopy[foodId]["quantity"] -= 1;
-        if (CartCopy[foodId]["quantity"]===0) {
-            delete CartCopy[foodId]
-        }
-        setCart(CartCopy);
-    }
+        setCart(prevState =>
+            prevState
+                .map(item =>
+                    item.id === foodId
+                        ? { ...item, quantity: item.quantity - 1 }
+                        : item
+                )
+                .filter(item => item.quantity > 0)
+        );
+    };
 
     const states = {
         Cart,
@@ -36,7 +51,6 @@ const CartProvider = ({children}) => {
         addToCart,
         removeFromCart
     }
-
     return (
         <CartContext.Provider value={states}>
             {children}
