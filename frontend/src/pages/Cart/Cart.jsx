@@ -27,6 +27,10 @@ const Table = ({states}) => {
 	const {Cart} = useContext(CartContext);
 
 	useEffect(() => {
+        localStorage.setItem("cart", JSON.stringify(Cart))
+    }, []);
+
+	useEffect(() => {
 		let total = 0;
 		Cart.forEach(c => {
 			total += c.price * c.quantity;

@@ -3,7 +3,7 @@ import Button from '../../components/Button/Button';
 import IconClose from '../../assets/components/IconClose';
 import {apiRequest} from "../../services/api.js";
 import {useState, useContext} from "react";
-import {useNavigate} from "react-router";
+import {Link, useNavigate} from "react-router";
 import AlertContext from "../../contexts/AlertContext/AlertContext.js";
 import Alert from "../../components/AlertPopup/Alert.jsx";
 
@@ -43,9 +43,9 @@ function Signup() {
 				<h1 className="text-xl text-secondary-100 font-bold">
 					Sign Up
 				</h1>
-				<a href="/">
+				<Link to={"/"}>
 					<IconClose />
-				</a>
+				</Link>
 			</div>
 
 			<fieldset className="px-6 py-6 border-b border-neutral-800 grid gap-6">
@@ -114,9 +114,9 @@ function Signup() {
 
 			<div className="px-6 pt-6 inline-flex justify-center items-center gap-2 text-sm text-secondary-500">
 				Already have an account ?{" "}
-				<a className="text-primary-600" href="/login">
+				<Link className="text-primary-600" to={"/login"}>
 					Login here
-				</a>
+				</Link>
 			</div>
 		</form>
 	);

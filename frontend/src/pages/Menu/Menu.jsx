@@ -72,12 +72,19 @@ export default Menu;
 
 
 const Dish = ({ food }) => {
-	const {Cart, addToCart, removeFromCart} = useContext(CartContext);
+	const {Cart, setCart, addToCart, removeFromCart} = useContext(CartContext);
 
 	const handlers = {
 		increment : () => addToCart(food.id),
 		decrement: () => removeFromCart(food.id)
 	}
+
+	useEffect(() => {
+		const currentCart = localStorage.getItem("cart")
+		if (currentCart) {
+			setCart(JSON.parse(currentCart))
+		}
+	}, []);
 
 	return (
 		<article className="dish-component">

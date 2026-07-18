@@ -22,17 +22,17 @@ function Navbar() {
     return (
         <header className="sticky inset-x-0 bg-white z-10">
             <div className="h-16 px-6 flex justify-between gap-8 items-center border-b-3 border-b-neutral-800">
-                <a href="/">
-                    <img src={assets.logo} alt="Tomato logo" />
-                </a>
+                <Link to={"/"}>
+                    <img src={`${assets.logo}`} alt="Tomato logo" />
+                </Link>
 
                 <nav className="">
                     <ul className="flex items-center gap-6 menu-links">
-                        <li><a href={"/"}>home</a></li>
-                        <li><a href={"/menu"}>menu</a></li>
-                        <li><a href={"/order"}>my order</a></li>
-                        <li><a href={"/mobile"}>mobile app</a></li>
-                        <li><a href={"/contact"}>contact us</a></li>
+                        <li><Link to={"/"}>home</Link></li>
+                        <li><Link to={"/menu"}>menu</Link></li>
+                        <li><Link to={"/order"}>my order</Link></li>
+                        <li><Link to={"/mobile"}>mobile app</Link></li>
+                        <li><Link to={"/contact"}>contact us</Link></li>
                     </ul>
                 </nav>
 
@@ -44,7 +44,7 @@ function Navbar() {
                         <Link to={"/cart"}>
                             <img
                                 className={"cursor-pointer"}
-                                src={assets.icon_cart}
+                                src={`${assets.icon_cart}`}
                                 alt="basket icon"
                             />
                         </Link>

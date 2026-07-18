@@ -18,7 +18,6 @@ import Contact from "./pages/Contact/Contact";
 import AuthProvider from "./contexts/AuthContext/AuthProvider.jsx";
 import AlertProvider from "./contexts/AlertContext/AlertProvider.jsx";
 import CartProvider from "./contexts/CartContext/CartProvider.jsx";
-import MenuContext from "./contexts/MenuContext/MenuContext.js";
 import MenuProvider from "./contexts/MenuContext/MenuProvider.jsx";
 
 

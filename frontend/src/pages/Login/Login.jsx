@@ -3,7 +3,7 @@ import Button from "../../components/Button/Button";
 import IconClose from '../../assets/components/IconClose';
 import Alert from "../../components/AlertPopup/Alert.jsx";
 import {useContext, useState} from "react";
-import {useNavigate} from "react-router";
+import {Link, useNavigate} from "react-router";
 import AlertContext from "../../contexts/AlertContext/AlertContext.js";
 import {apiRequest} from "../../services/api.js";
 
@@ -36,9 +36,9 @@ function Login() {
                 <h1 className="text-3xl pt-8 text-secondary-100 font-bold">Login</h1>
                 <span className="text-xs text-secondary-200">Welcome back to Tomato.</span>
 
-                <a href="/" className="absolute right-4 top-4">
+                <Link to={"/"} className="absolute right-4 top-4">
                     <IconClose />
-                </a>
+                </Link>
             </div>
 
             <fieldset className="px-6 py-6 grid gap-6">
@@ -91,9 +91,9 @@ function Login() {
 
             <div className="px-6 pt-6 inline-flex justify-center items-center gap-2 text-sm text-secondary-500">
                 Create a new account ?{" "}
-                <a className="text-primary-600" href="/signup">
+                <Link className="text-primary-600" to={"/signup"}>
                     Click here
-                </a>
+                </Link>
             </div>
         </form>
     );
