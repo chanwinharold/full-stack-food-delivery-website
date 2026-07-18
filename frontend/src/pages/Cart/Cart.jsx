@@ -1,16 +1,20 @@
-import { food_list } from "../../assets/assets";
 import IconClose from "../../assets/components/IconClose";
 import Button from "../../components/Button/Button";
 import "./Cart.css";
+import {useContext, useEffect, useState} from "react";
+import CartContext from "../../contexts/CartContext/CartContext.js";
+
 
 function Cart() {
+	const [total, setTotal] = useState(0);
+
 	return (
 		<main className="px-6 py-12">
 			<h1 className="text-2xl pb-8 capitalize font-bold">your cart</h1>
 
 			<div className="cart-container">
-				<Table />
-				<Aside />
+				<Table states={{setTotal}} />
+				<Aside states={{total}} />
 			</div>
 		</main>
 	);
@@ -18,8 +22,18 @@ function Cart() {
 
 export default Cart;
 
-const Table = () => {
-	const Foods = food_list.slice(24, 36)
+const Table = ({states}) => {
+	const {setTotal} = states;
+	const {Cart} = useContext(CartContext);
+
+	useEffect(() => {
+		let total = 0;
+		Cart.forEach(c => {
+			total += c.price * c.quantity;
+		})
+		setTotal(total)
+	}, [Cart, setTotal]);
+
 	const head_list = [
 		"items",
 		"title",
@@ -28,20 +42,21 @@ const Table = () => {
 		"total",
 		"remove",
 	];
+
 	return (
 		<section className="bg-neutral-950 rounded-default overflow-hidden pb-4 h-min border border-neutral-600">
 			<table className="w-full text-center m-auto">
 				<thead>
-					<tr className="uppercase text-primary-900 font-thin text-sm">
-						{head_list.map((title) => (
-							<th>{title}</th>
-						))}
-					</tr>
+				<tr className="uppercase text-primary-900 font-thin text-sm">
+					{head_list.map((title, index) => (
+						<th key={index}>{title}</th>
+					))}
+				</tr>
 				</thead>
 				<tbody>
-					{Foods.map((food) => (
-						<Item food={food} />
-					))}
+				{Cart.length > 0 && Cart.map(cartItem => (
+					<Item key={cartItem.id} food={cartItem} />
+				))}
 				</tbody>
 			</table>
 		</section>
@@ -49,15 +64,13 @@ const Table = () => {
 };
 
 const Item = ({ food }) => {
-	// eslint-disable-next-line react-hooks/purity
-	const count = (Math.random() * 10).toFixed(0);
 
 	return (
 		<tr className="border-t border-t-neutral-800">
 			<td className="py-4">
 				<img
 					className="w-16 h-16 object-cover object-center rounded-default m-auto"
-					src={food.image}
+					src={`/src/assets/images/foods/${food.image}`}
 					alt=""
 				/>
 			</td>
@@ -70,13 +83,13 @@ const Item = ({ food }) => {
 					<span className="cursor-pointer w-8 h-8 inline-grid place-content-center bg-neutral-800 rounded-full transition-all hover:scale-125 hover:bg-neutral-900">
 						-
 					</span>
-					<span>{count}</span>
+					<span>{food.quantity}</span>
 					<span className="cursor-pointer w-8 h-8 inline-grid place-content-center bg-primary-600 rounded-full transition-all hover:scale-125 hover:bg-primary-400">
 						+
 					</span>
 				</div>
 			</td>
-			<td className="font-semibold">${food.price * count}</td>
+			<td className="font-semibold">${food.price * food.quantity}</td>
 			<td>
 				<button>
 					<IconClose />
@@ -86,7 +99,10 @@ const Item = ({ food }) => {
 	);
 };
 
-const Aside = () => {
+const Aside = ({states}) => {
+	const {total} = states;
+	const deliveryFee = total > 0 ? 5 : 0;
+
 	return (
 		<aside className="grid gap-6 place-self-start">
 			<div className="bg-neutral-950 grid gap-8 rounded-default p-6 h-min">
@@ -97,18 +113,18 @@ const Aside = () => {
 				<div className="grid gap-6 text-md">
 					<div className="flex justify-between border-b border-b-neutral-800 pb-2">
 						<span>Subtotal</span>
-						<span className="text-sm font-bold">$42.50</span>
+						<span className="text-sm font-bold">{total.toFixed(2)}</span>
 					</div>
 					<div className="flex justify-between border-b border-b-neutral-800 pb-2">
 						<span>Delivery Fee</span>
-						<span className="text-sm font-bold">$5.00</span>
+						<span className="text-sm font-bold">{deliveryFee.toFixed(2)}</span>
 					</div>
 				</div>
 
 				<div className="flex justify-between">
 					<span className="text-xl font-bold">Total</span>
 					<span className="text-2xl text-primary-600 font-semibold">
-						$42.00
+						{`$${(total + deliveryFee).toFixed(2)}`}
 					</span>
 				</div>
 
