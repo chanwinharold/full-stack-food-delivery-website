@@ -2,6 +2,8 @@ import "./Checkout.css";
 import Button, { BtnGoBack } from "../../components/Button/Button";
 import IconArrowRight from "../../assets/components/IconArrowRight";
 import IconLock from "../../assets/components/IconLock";
+import {useContext} from "react";
+import CartContext from "../../contexts/CartContext/CartContext.js";
 
 function Checkout() {
 	return (
@@ -115,6 +117,8 @@ const Delivery = () => {
 };
 
 const Aside = () => {
+	const {Total, extra} = useContext(CartContext);
+
 	return (
 		<aside className="w-full grid gap-6 place-self-start">
 			<div className="bg-neutral-950 grid gap-8 rounded-default p-6 h-min">
@@ -125,22 +129,25 @@ const Aside = () => {
 				<div className="grid gap-6 text-md">
 					<div className="flex justify-between border-b border-b-neutral-800 pb-2">
 						<span>Subtotal</span>
-						<span className="text-sm font-bold">$42.50</span>
+						<span className="text-sm font-bold">{Total.toFixed(2)}</span>
 					</div>
 					<div className="flex justify-between border-b border-b-neutral-800 pb-2">
 						<span>Delivery Fee</span>
-						<span className="text-sm font-bold">$5.00</span>
+						<span className="text-sm font-bold">{Total > 0 ? extra.deliveryFee.toFixed(2) : (0).toFixed(2)}</span>
 					</div>
 					<div className="flex justify-between border-b border-b-neutral-800 pb-2">
 						<span>Taxes</span>
-						<span className="text-sm font-bold">$4.00</span>
+						<span className="text-sm font-bold">{Total > 0 ? extra.taxes.toFixed(2) : (0).toFixed(2)}</span>
 					</div>
 				</div>
 
 				<div className="flex justify-between">
 					<span className="text-xl font-bold">Total</span>
 					<span className="text-2xl text-primary-600 font-semibold">
-						$42.00
+						{`$${Total > 0 
+							? (Total + extra.deliveryFee + extra.taxes).toFixed(2)
+							: (0).toFixed(2)
+						}`}
 					</span>
 				</div>
 
