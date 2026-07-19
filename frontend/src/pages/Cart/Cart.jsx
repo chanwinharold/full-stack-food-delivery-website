@@ -1,20 +1,19 @@
 import IconClose from "../../assets/components/IconClose";
 import Button from "../../components/Button/Button";
 import "./Cart.css";
-import {useContext, useEffect, useState} from "react";
+import {useContext, useEffect} from "react";
 import CartContext from "../../contexts/CartContext/CartContext.js";
 
 
 function Cart() {
-	const [total, setTotal] = useState(0);
 
 	return (
 		<main className="px-6 py-12">
 			<h1 className="text-2xl pb-8 capitalize font-bold">your cart</h1>
 
 			<div className="cart-container">
-				<Table states={{setTotal}} />
-				<Aside states={{total}} />
+				<Table />
+				<Aside />
 			</div>
 		</main>
 	);
@@ -22,13 +21,9 @@ function Cart() {
 
 export default Cart;
 
-const Table = ({states}) => {
-	const {setTotal} = states;
+const Table = () => {
+	const {setTotal} = useContext(CartContext);
 	const {Cart} = useContext(CartContext);
-
-	useEffect(() => {
-        localStorage.setItem("cart", JSON.stringify(Cart))
-    }, []);
 
 	useEffect(() => {
 		let total = 0;
@@ -68,6 +63,13 @@ const Table = ({states}) => {
 };
 
 const Item = ({ food }) => {
+	const {addToCart, removeFromCart, clearFromCart} = useContext(CartContext);
+
+	const handler = {
+		increment: () => addToCart(food.id),
+		decrement: () => removeFromCart(food.id),
+		delete: () => clearFromCart(food.id)
+	}
 
 	return (
 		<tr className="border-t border-t-neutral-800">
@@ -84,18 +86,18 @@ const Item = ({ food }) => {
 			<td className="text-primary-900">${food.price}</td>
 			<td>
 				<div className="w-30 flex justify-between items-center m-auto">
-					<span className="cursor-pointer w-8 h-8 inline-grid place-content-center bg-neutral-800 rounded-full transition-all hover:scale-125 hover:bg-neutral-900">
+					<span onClick={handler.decrement} className="cursor-pointer w-8 h-8 inline-grid place-content-center bg-neutral-800 rounded-full transition-all hover:scale-125 hover:bg-neutral-900">
 						-
 					</span>
 					<span>{food.quantity}</span>
-					<span className="cursor-pointer w-8 h-8 inline-grid place-content-center bg-primary-600 rounded-full transition-all hover:scale-125 hover:bg-primary-400">
+					<span onClick={handler.increment} className="cursor-pointer w-8 h-8 inline-grid place-content-center bg-primary-600 rounded-full transition-all hover:scale-125 hover:bg-primary-400">
 						+
 					</span>
 				</div>
 			</td>
 			<td className="font-semibold">${food.price * food.quantity}</td>
 			<td>
-				<button>
+				<button onClick={handler.delete}>
 					<IconClose />
 				</button>
 			</td>
@@ -103,9 +105,8 @@ const Item = ({ food }) => {
 	);
 };
 
-const Aside = ({states}) => {
-	const {total} = states;
-	const deliveryFee = total > 0 ? 5 : 0;
+const Aside = () => {
+	const {Total, extra} = useContext(CartContext);
 
 	return (
 		<aside className="grid gap-6 place-self-start">
@@ -117,18 +118,26 @@ const Aside = ({states}) => {
 				<div className="grid gap-6 text-md">
 					<div className="flex justify-between border-b border-b-neutral-800 pb-2">
 						<span>Subtotal</span>
-						<span className="text-sm font-bold">{total.toFixed(2)}</span>
+						<span className="text-sm font-bold">{Total.toFixed(2)}</span>
 					</div>
 					<div className="flex justify-between border-b border-b-neutral-800 pb-2">
 						<span>Delivery Fee</span>
-						<span className="text-sm font-bold">{deliveryFee.toFixed(2)}</span>
+						<span className="text-sm font-bold">
+							{Total > 0
+								? extra.deliveryFee.toFixed(2)
+								: 0
+							}
+						</span>
 					</div>
 				</div>
 
 				<div className="flex justify-between">
 					<span className="text-xl font-bold">Total</span>
 					<span className="text-2xl text-primary-600 font-semibold">
-						{`$${(total + deliveryFee).toFixed(2)}`}
+						{`$${Total > 0 
+							? (Total + extra.deliveryFee).toFixed(2)
+							: (0).toFixed(2)
+						}`}
 					</span>
 				</div>
 
