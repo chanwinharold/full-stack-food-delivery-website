@@ -6,6 +6,8 @@ import {useContext, useEffect, useState} from "react";
 import AlertContext from "../../contexts/AlertContext/AlertContext.js";
 import Alert from "../../components/AlertPopup/Alert.jsx";
 import {apiRequest} from "../../services/api.js";
+import CartContext from "../../contexts/CartContext/CartContext.js";
+import AuthContext from "../../contexts/AuthContext/AuthContext.js";
 
 
 function Home() {
@@ -142,6 +144,15 @@ const TopDishesSection = () => {
 };
 
 const Dish = ({ food }) => {
+	const {auth} = useContext(AuthContext);
+	const {addToCart} = useContext(CartContext);
+	const [added, setAdded] = useState(false);
+
+	const handleAddToCart = () => {
+		addToCart(food.id);
+		setAdded(true)
+	}
+
 	return (
 		<article className="dish-component">
 			<img src={`/src/assets/images/foods/${food.image}`} alt={`${food.name} image`} />
@@ -166,12 +177,16 @@ const Dish = ({ food }) => {
 					<em className="not-italic font-medium text-primary-600 text-xl transition-colors hover:text-primary-400">
 						${food.price}
 					</em>
-					<button
-						className="cursor-pointer w-6 h-6 inline-grid place-content-center bg-neutral-800 rounded-full transition-all hover:scale-125 hover:bg-neutral-900"
-						type={"button"}
-					>
-						+
-					</button>
+					{auth &&
+						<button
+							onClick={handleAddToCart}
+							className="disabled:opacity-5 cursor-pointer w-6 h-6 inline-grid place-content-center bg-neutral-800 rounded-full transition-all hover:scale-125 hover:bg-neutral-900"
+							type={"button"}
+							disabled={added}
+						>
+							+
+						</button>
+					}
 				</div>
 			</div>
 		</article>

@@ -19,9 +19,18 @@ import AuthProvider from "./contexts/AuthContext/AuthProvider.jsx";
 import AlertProvider from "./contexts/AlertContext/AlertProvider.jsx";
 import CartProvider from "./contexts/CartContext/CartProvider.jsx";
 import MenuProvider from "./contexts/MenuContext/MenuProvider.jsx";
+import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute.jsx";
 
 
 const router = createBrowserRouter([
+	{
+		path: "/signup",
+		Component: Signup,
+	},
+	{
+		path: "/login",
+		Component: Login,
+	},
 	{
 		path: "/",
 		Component: AppLayout,
@@ -29,14 +38,6 @@ const router = createBrowserRouter([
 			{
 				index: true,
 				Component: Home
-			},
-			{
-				path: "/menu",
-				Component: Menu
-			},
-			{
-				path: "/order",
-				Component: Order
 			},
 			{
 				path: "/mobile",
@@ -47,8 +48,21 @@ const router = createBrowserRouter([
 				Component: Contact
 			},
 			{
-				path: "/cart",
-				Component: Cart
+				element: <ProtectedRoute />,
+				children: [
+					{
+						path: "/menu",
+						Component: Menu
+					},
+					{
+						path: "/order",
+						Component: Order
+					},
+					{
+						path: "/cart",
+						Component: Cart
+					},
+				]
 			},
 		],
 	},
@@ -57,22 +71,24 @@ const router = createBrowserRouter([
 		Component: AppWithOnlyFooterLayout,
 		children: [
 			{
-				path: "/checkout",
-				Component: Checkout,
-			},
+				element: <ProtectedRoute />,
+				children: [
+					{
+						path: "/checkout",
+						Component: Checkout,
+					},
+				]
+			}
 		],
 	},
 	{
-		path: "/signup",
-		Component: Signup,
-	},
-	{
-		path: "/login",
-		Component: Login,
-	},
-	{
-		path: "/payment",
-		Component: Payment,
+		element: <ProtectedRoute />,
+		children: [
+			{
+				path: "/payment",
+				Component: Payment,
+			},
+		]
 	},
 ]);
 
