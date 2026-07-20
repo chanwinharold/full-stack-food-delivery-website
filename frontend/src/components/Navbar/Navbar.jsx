@@ -6,12 +6,15 @@ import {useContext, useEffect} from "react";
 import handleAuth from "../../services/auth.js";
 import AlertContext from "../../contexts/AlertContext/AlertContext.js";
 import AuthContext from "../../contexts/AuthContext/AuthContext.js";
+import Cart from "../../pages/Cart/Cart.jsx";
+import CartContext from "../../contexts/CartContext/CartContext.js";
 
 
 function Navbar() {
     const {setShowAlert, setDetail, setStatus} = useContext(AlertContext);
     const {auth, setAuth} = useContext(AuthContext);
     const statesAuth = {setShowAlert, setStatus, setDetail}
+    const {Cart} = useContext(CartContext);
 
     useEffect(() => {
         handleAuth(statesAuth).then(authRes => {
@@ -38,15 +41,19 @@ function Navbar() {
 
                 <div className="flex items-center gap-6">
                     <div>
-                        <img className={"cursor-pointer"} src={assets.icon_search} alt="search icon"/>
+                        <img className={"cursor-pointer"} src={`${assets.icon_search}`} alt="search icon"/>
                     </div>
-                    <div>
+                    <div className={"relative"}>
                         <Link to={"/cart"}>
                             <img
                                 className={"cursor-pointer"}
                                 src={`${assets.icon_cart}`}
                                 alt="basket icon"
                             />
+                            {Cart.length > 0
+                                ? <span className={`absolute -top-1 -right-2 inline-block w-6 h-4 text-center font-bold rounded-xl bg-primary-500 text-xs `}>{Cart.length}</span>
+                                : null
+                            }
                         </Link>
                     </div>
 

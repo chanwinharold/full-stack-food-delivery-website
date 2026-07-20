@@ -125,7 +125,7 @@ const Aside = () => {
 						<span className="text-sm font-bold">
 							{Total > 0
 								? extra.deliveryFee.toFixed(2)
-								: 0
+								: (0).toFixed(2)
 							}
 						</span>
 					</div>
