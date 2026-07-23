@@ -1,0 +1,12 @@
+### Add command details
+POST {{host}}/details/
+Content-Type: application/json
+
+{
+    "ref_command": 1,
+    "ref_dish": 1,
+    "quantity": 2,
+    "unit_price": 15.99
+}
+
+###

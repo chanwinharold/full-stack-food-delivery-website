@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router";
 import "./Button.css";
 
-function Button({ children, link, className, type }) {
+function Button({ children, link, className, type, ...props }) {
 	const Navigate = useNavigate();
 
 	const handleNavigate = () => {
@@ -9,7 +9,12 @@ function Button({ children, link, className, type }) {
 	}
 
 	return (
-		<button type={type || "button"} onClick={!type ? handleNavigate : null} className={`btn ${className}`}>
+		<button
+			type={type || "button"}
+			onClick={!type ? handleNavigate : null}
+			className={`btn ${className}`}
+			{...props}
+		>
 			{children}
 		</button>
 	);

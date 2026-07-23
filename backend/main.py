@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from routers import users, menus, dishes
+from routers import users, menus, dishes, commands, delivery_infos, command_details
 from fastapi.middleware.cors import CORSMiddleware
 
 
@@ -21,6 +21,9 @@ app.add_middleware(
 app.include_router(users.router)
 app.include_router(menus.router)
 app.include_router(dishes.router)
+app.include_router(commands.router)
+app.include_router(delivery_infos.router)
+app.include_router(command_details.router)
 
 @app.get("/")
 def root():

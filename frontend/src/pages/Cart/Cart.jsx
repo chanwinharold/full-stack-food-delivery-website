@@ -143,9 +143,8 @@ const Aside = () => {
 
 				<Button
 					link={"/checkout"}
-					className={
-						"rounded-sm btn-primary uppercase inline-grid place-content-center h-12"
-					}
+					className={"disabled:bg-primary-200 disabled:border-none disabled:cursor-not-allowed rounded-sm btn-primary uppercase inline-grid place-content-center h-12"}
+					disabled={Total === 0}
 				>
 					proceed to checkout
 				</Button>

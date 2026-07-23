@@ -1,0 +1,18 @@
+### Create a delivery by adding delivery infos
+POST {{host}}/delivery
+Content-Type: application/json
+
+{
+    "firstname": "John",
+    "lastname": "Doe",
+    "email": "john.doe@example.com",
+    "phone": "+1234567890",
+    "street": "123 Main Street",
+    "city": "New York",
+    "state": "NY",
+    "postal_code": 10001,
+    "country": "USA",
+    "ref_command": 1
+}
+
+###

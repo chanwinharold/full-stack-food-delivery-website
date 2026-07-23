@@ -1,0 +1,14 @@
+
+CREATE TABLE IF NOT EXISTS DELIVERY_INFOS (
+    id SERIAL NOT NULL PRIMARY KEY,
+    firstname VARCHAR(255) NOT NULL,
+    lastname VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    phone VARCHAR(255) NOT NULL,
+    street VARCHAR(255) NOT NULL,
+    city VARCHAR(255) NOT NULL,
+    state VARCHAR(255) NOT NULL,
+    postal_code INT NOT NULL,
+    country VARCHAR(255) NOT NULL,
+    ref_command INT NOT NULL REFERENCES commands(id)
+);

@@ -1,0 +1,12 @@
+
+
+CREATE TABLE IF NOT EXISTS PAYMENTS (
+    id SERIAL NOT NULL PRIMARY KEY,
+    email VARCHAR(255) NOT NULL,
+    status VARCHAR(255) NOT NULL CHECK (status IN ('NOT PAID', 'PAID', 'ERROR', 'CANCELED')),
+    method VARCHAR(255) NOT NULL,
+    currency VARCHAR(255) NOT NULL CHECK (currency IN ('USD', 'EUR')),
+    amount REAL NOT NULL,
+    ref_transaction VARCHAR(1024) NOT NULL UNIQUE,
+    ref_command INT NOT NULL REFERENCES commands(id)
+)

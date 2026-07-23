@@ -2,16 +2,14 @@ import "./Checkout.css";
 import Button, { BtnGoBack } from "../../components/Button/Button";
 import IconArrowRight from "../../assets/components/IconArrowRight";
 import IconLock from "../../assets/components/IconLock";
-import {useContext} from "react";
+import {useContext, useState} from "react";
 import CartContext from "../../contexts/CartContext/CartContext.js";
 
 function Checkout() {
 	return (
 		<main className="px-6 pb-12 pt-6 w-full">
 			<BtnGoBack to={"/cart"} className={"pb-8"}>Back to Cart</BtnGoBack>
-
 			<h1 className="text-4xl pb-8 capitalize font-bold">Checkout</h1>
-
 			<div className="cart-container">
 				<Delivery />
 				<Aside />
@@ -23,8 +21,20 @@ function Checkout() {
 export default Checkout;
 
 const Delivery = () => {
+	const [inputs, setInputs] = useState({})
+
+	const handleChange = (e) => {
+		const name = e.target.name
+		const value = e.target.value
+		setInputs(values => ({...values, [name]: value}))
+	}
+	const handleSubmit = (e) => {
+		e.preventDefault();
+		console.log(inputs)
+	}
+
 	return (
-		<form className="grid gap-6 bg-neutral-950 p-8 rounded-default">
+		<form id={"checkout-form"} className="grid gap-6 bg-neutral-950 p-8 rounded-default" onSubmit={handleSubmit}>
 			<h2 className="text-2xl font-semibold capitalize">
 				delivery information
 			</h2>
@@ -37,6 +47,9 @@ const Delivery = () => {
 						name="first name"
 						id="first-name"
 						placeholder="John"
+						value={inputs.firstname}
+						onChange={handleChange}
+						required={true}
 					/>
 				</label>
 				<label className={"form-field"} htmlFor="last-name">
@@ -46,6 +59,9 @@ const Delivery = () => {
 						name="last name"
 						id="last-name"
 						placeholder="Doe"
+						value={inputs.lastname}
+						onChange={handleChange}
+						required
 					/>
 				</label>
 				<label className={"form-field"} htmlFor="email">
@@ -55,6 +71,9 @@ const Delivery = () => {
 						name="email"
 						id="email"
 						placeholder="john.doe@example.com"
+						value={inputs.email}
+						onChange={handleChange}
+						required
 					/>
 				</label>
 				<label className={"form-field"} htmlFor="phone">
@@ -64,6 +83,9 @@ const Delivery = () => {
 						name="phone"
 						id="phone"
 						placeholder="(555) 123-4567-890"
+						value={inputs.phone}
+						onChange={handleChange}
+						required
 					/>
 				</label>
 				<label className={"form-field col-span-2"} htmlFor="street">
@@ -73,6 +95,9 @@ const Delivery = () => {
 						name="street-address"
 						id="street"
 						placeholder="123 Main St"
+						value={inputs.street}
+						onChange={handleChange}
+						required
 					/>
 				</label>
 				<label className={"form-field"} htmlFor="city">
@@ -82,6 +107,9 @@ const Delivery = () => {
 						name="city"
 						id="city"
 						placeholder="Anytown"
+						value={inputs.city}
+						onChange={handleChange}
+						required
 					/>
 				</label>
 				<label className={"form-field"} htmlFor="state">
@@ -91,6 +119,9 @@ const Delivery = () => {
 						name="state"
 						id="state"
 						placeholder="CA"
+						value={inputs.state}
+						onChange={handleChange}
+						required
 					/>
 				</label>
 				<label className={"form-field"} htmlFor="postal-code">
@@ -100,6 +131,9 @@ const Delivery = () => {
 						name="postal-code"
 						id="postal-code"
 						placeholder="12345"
+						value={inputs.postalCode}
+						onChange={handleChange}
+						required
 					/>
 				</label>
 				<label className={"form-field"} htmlFor="country">
@@ -109,6 +143,9 @@ const Delivery = () => {
 						name="country"
 						id="country"
 						placeholder="United States"
+						value={inputs.country}
+						onChange={handleChange}
+						required
 					/>
 				</label>
 			</div>
@@ -156,6 +193,9 @@ const Aside = () => {
 					className={
 						"rounded-sm btn-primary capitalize inline-flex justify-center items-center gap-2 h-12"
 					}
+					type={`submit`}
+					disabled={Total === 0}
+					form={"checkout-form"}
 				>
 					<span>proceed to payment</span>
 					<IconArrowRight />

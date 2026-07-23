@@ -1,0 +1,5 @@
+### Create a command
+POST {{host}}/commands
+Content-Type: application/json
+
+###
