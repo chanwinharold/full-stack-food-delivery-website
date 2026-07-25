@@ -106,7 +106,7 @@ const ExploreMenuSection = () => {
 							>
 								<img
 									className="w-20 h-20 rounded-full border-3 border-transparent"
-									src={`/frontend/src/assets/images/menus/${image}`}
+									src={`/images/menus/${image}`}
 									alt={`${name} image`}
 								/>
 								<span className="text-sm capitalize">
@@ -178,7 +178,7 @@ const Dish = ({ food }) => {
 
 	return (
 		<article className="dish-component">
-			<img src={`/frontend/src/assets/images/foods/${food.image}`} alt={`${food.name} image`} />
+			<img src={`/images/foods/${food.image}`} alt={`${food.name} image`} />
 			<div className="grid px-3 py-3 gap-3 relative">
 				{/* Note */}
 				<span className="absolute top-4 right-4 flex gap-1">
