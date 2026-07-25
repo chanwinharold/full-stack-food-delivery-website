@@ -100,7 +100,7 @@ function Menu() {
 					>
 						<img
 							className="w-16 h-16 rounded-full border-3 border-transparent"
-							src={`../../assets/images/menus/${image}`}
+							src={`/frontend/src/assets/images/menus/${image}`}
 							alt={`${name} image`}
 						/>
 						<span className="text-sm capitalize">
@@ -145,7 +145,7 @@ const Dish = ({ food }) => {
 			<div className="relative">
 				<img
 					className="w-full max-h-37.5 object-cover object-center"
-					src={`../../assets/images/foods/${food.image}`}
+					src={`/frontend/src/assets/images/foods/${food.image}`}
 					alt={food.name}
 				/>
 				{!Cart.find(f => f.id === food.id) ? (

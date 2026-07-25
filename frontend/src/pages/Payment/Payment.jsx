@@ -91,7 +91,7 @@ const OrderItem = ({ food }) => {
 			<div className="flex gap-4 items-center">
 				<img
 					className="w-12 h-12 rounded-default object-cover"
-					src={`../../assets/images/foods/${food.image}`}
+					src={`/frontend/src/assets/images/foods/${food.image}`}
 					alt={food.name}
 				/>
 				<div className="grid gap-1">
