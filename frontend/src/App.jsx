@@ -3,6 +3,7 @@ import { RouterProvider } from "react-router/dom";
 
 import Navbar from "./components/Navbar/Navbar";
 import Footer from "./components/Footer/Footer";
+import ErrorBoundary from "./components/ErrorBoundary/ErrorBoundary.jsx";
 
 import Home from "./pages/Home/Home";
 import Cart from "./pages/Cart/Cart";
@@ -94,15 +95,17 @@ const router = createBrowserRouter([
 
 function App() {
 	return (
-		<AuthProvider>
-			<MenuProvider>
-				<CartProvider>
-					<AlertProvider>
-						<RouterProvider router={router} />
-					</AlertProvider>
-				</CartProvider>
-			</MenuProvider>
-		</AuthProvider>
+		<ErrorBoundary>
+			<AuthProvider>
+				<MenuProvider>
+					<CartProvider>
+						<AlertProvider>
+							<RouterProvider router={router} />
+						</AlertProvider>
+					</CartProvider>
+				</MenuProvider>
+			</AuthProvider>
+		</ErrorBoundary>
 	);
 }
 

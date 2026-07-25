@@ -4,6 +4,7 @@ import IconArrowRight from "../../assets/components/IconArrowRight";
 import IconLock from "../../assets/components/IconLock";
 import {useContext, useState} from "react";
 import CartContext from "../../contexts/CartContext/CartContext.js";
+import {useNavigate} from "react-router";
 
 function Checkout() {
 	return (
@@ -21,16 +22,22 @@ function Checkout() {
 export default Checkout;
 
 const Delivery = () => {
-	const [inputs, setInputs] = useState({})
+	const {setDeliveryInfo, deliveryInfo} = useContext(CartContext);
+	const navigate = useNavigate();
+	const [inputs, setInputs] = useState(() => {
+		return deliveryInfo || {};
+	});
 
 	const handleChange = (e) => {
-		const name = e.target.name
-		const value = e.target.value
-		setInputs(values => ({...values, [name]: value}))
+		const name = e.target.name;
+		const value = e.target.value;
+		setInputs(values => ({...values, [name]: value}));
 	}
+
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		console.log(inputs)
+		setDeliveryInfo(inputs);
+		navigate("/payment");
 	}
 
 	return (
@@ -44,10 +51,10 @@ const Delivery = () => {
 					<span>First name</span>
 					<input
 						type="text"
-						name="first name"
+						name="firstname"
 						id="first-name"
 						placeholder="John"
-						value={inputs.firstname}
+						value={inputs.firstname || ""}
 						onChange={handleChange}
 						required={true}
 					/>
@@ -56,10 +63,10 @@ const Delivery = () => {
 					<span>Last name</span>
 					<input
 						type="text"
-						name="last name"
+						name="lastname"
 						id="last-name"
 						placeholder="Doe"
-						value={inputs.lastname}
+						value={inputs.lastname || ""}
 						onChange={handleChange}
 						required
 					/>
@@ -71,7 +78,7 @@ const Delivery = () => {
 						name="email"
 						id="email"
 						placeholder="john.doe@example.com"
-						value={inputs.email}
+						value={inputs.email || ""}
 						onChange={handleChange}
 						required
 					/>
@@ -83,7 +90,7 @@ const Delivery = () => {
 						name="phone"
 						id="phone"
 						placeholder="(555) 123-4567-890"
-						value={inputs.phone}
+						value={inputs.phone || ""}
 						onChange={handleChange}
 						required
 					/>
@@ -92,10 +99,10 @@ const Delivery = () => {
 					<span>Street address</span>
 					<input
 						type="text"
-						name="street-address"
+						name="street"
 						id="street"
 						placeholder="123 Main St"
-						value={inputs.street}
+						value={inputs.street || ""}
 						onChange={handleChange}
 						required
 					/>
@@ -107,7 +114,7 @@ const Delivery = () => {
 						name="city"
 						id="city"
 						placeholder="Anytown"
-						value={inputs.city}
+						value={inputs.city || ""}
 						onChange={handleChange}
 						required
 					/>
@@ -119,7 +126,7 @@ const Delivery = () => {
 						name="state"
 						id="state"
 						placeholder="CA"
-						value={inputs.state}
+						value={inputs.state || ""}
 						onChange={handleChange}
 						required
 					/>
@@ -128,10 +135,10 @@ const Delivery = () => {
 					<span>Zip / Postal code</span>
 					<input
 						type="number"
-						name="postal-code"
+						name="postal_code"
 						id="postal-code"
 						placeholder="12345"
-						value={inputs.postalCode}
+						value={inputs.postal_code || ""}
 						onChange={handleChange}
 						required
 					/>
@@ -143,7 +150,7 @@ const Delivery = () => {
 						name="country"
 						id="country"
 						placeholder="United States"
-						value={inputs.country}
+						value={inputs.country || ""}
 						onChange={handleChange}
 						required
 					/>
@@ -189,7 +196,6 @@ const Aside = () => {
 				</div>
 
 				<Button
-					link={"/payment"}
 					className={
 						"rounded-sm btn-primary capitalize inline-flex justify-center items-center gap-2 h-12"
 					}

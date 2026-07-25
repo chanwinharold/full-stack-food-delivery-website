@@ -1,9 +1,13 @@
 import "./Payment.css";
-import Button, { BtnGoBack } from "../../components/Button/Button";
+import { BtnGoBack } from "../../components/Button/Button";
 import IconDish from '../../assets/components/IconDish';
 import IconLock from '../../assets/components/IconLock';
-import {useContext} from "react";
+import {useContext, useState} from "react";
 import CartContext from "../../contexts/CartContext/CartContext.js";
+import AlertContext from "../../contexts/AlertContext/AlertContext.js";
+import {createOrder} from "../../services/orders.js";
+import {useNavigate} from "react-router";
+import {isGoodResponse} from "../../services/status.js";
 
 
 function Payment() {
@@ -36,7 +40,7 @@ const OrderSummary = () => {
 
 				<div className="grid gap-4 max-h-50 overflow-y-auto scrollbar-hidden">
 					{Cart.map(f => (
-						<Order food={f} />
+						<OrderItem food={f} key={f.id} />
 					))}
 				</div>
 
@@ -71,7 +75,7 @@ const OrderSummary = () => {
 };
 
 
-const Order = ({ food }) => {
+const OrderItem = ({ food }) => {
 	return (
 		<article className="flex justify-between">
 			<div className="flex gap-4 items-center">
@@ -92,20 +96,72 @@ const Order = ({ food }) => {
 
 
 const FormPayment = () => {
-	const {Total, extra} = useContext(CartContext);
+	const {Cart, Total, extra, deliveryInfo, clearCart} = useContext(CartContext);
+	const {setShowAlert, setStatus, setDetail} = useContext(AlertContext);
+	const navigate = useNavigate();
+	const [loading, setLoading] = useState(false);
+
+	const handlePay = async () => {
+		if (!deliveryInfo) {
+			setShowAlert(true);
+			setStatus(400);
+			setDetail("Please complete delivery information first");
+			return;
+		}
+
+		setLoading(true);
+		try {
+			const orderPayload = {
+				items: Cart.map(item => ({
+					ref_dish: item.id,
+					quantity: item.quantity,
+					unit_price: item.price,
+				})),
+				delivery: {
+					firstname: deliveryInfo.firstname,
+					lastname: deliveryInfo.lastname,
+					email: deliveryInfo.email,
+					phone: deliveryInfo.phone,
+					street: deliveryInfo.street,
+					city: deliveryInfo.city,
+					state: deliveryInfo.state,
+					postal_code: parseInt(deliveryInfo.postal_code),
+					country: deliveryInfo.country,
+				},
+			};
+
+			const response = await createOrder(orderPayload);
+
+			if (isGoodResponse(response.status)) {
+				clearCart();
+				navigate("/order");
+			} else {
+				setShowAlert(true);
+				setStatus(response.status);
+				setDetail(response.detail || "Failed to place order");
+			}
+		} catch {
+			setShowAlert(true);
+			setStatus(500);
+			setDetail("An error occurred while placing your order");
+		} finally {
+			setLoading(false);
+		}
+	};
 
 	return (
 		<section className="p-8 flex flex-col gap-12 bg-neutral-950 w-full">
 			<h2 className="text-2xl font-medium">Pay with card</h2>
 
-			<form className="grid justify-between gap-8" action="">
-				<label className={"form-field"} htmlFor="email">
+			<div className="grid justify-between gap-8">
+				<label className={"form-field"} htmlFor="pay-email">
 					<span>Email</span>
 					<input
 						type="email"
 						name="email"
-						id="email"
+						id="pay-email"
 						placeholder="customer@example.com"
+						defaultValue={deliveryInfo?.email || ""}
 					/>
 				</label>
 				<label className={"card-field"} htmlFor="card-number">
@@ -148,19 +204,24 @@ const FormPayment = () => {
 						name="card-country"
 						id="card-country"
 						placeholder="United States"
+						defaultValue={deliveryInfo?.country || ""}
 					/>
 				</label>
 
-				<Button link={"/"} className={"bg-tertiary-500 rounded-default inline-flex m-0 gap-2 items-center justify-center text-neutral-950 h-12 font-bold w-full"}>
+				<button
+					onClick={handlePay}
+					disabled={loading || Cart.length === 0}
+					className="bg-tertiary-500 rounded-default inline-flex m-0 gap-2 items-center justify-center text-neutral-950 h-12 font-bold w-full cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+				>
 					<IconLock />
-					<span>Pay</span>
-					<span>${Total > 0
+					<span>{loading ? "Processing..." : "Pay"}</span>
+					{!loading && <span>${Total > 0
 						? (Total + extra.deliveryFee + extra.taxes).toFixed(2)
 						: (0).toFixed(2)
-					}</span>
-				</Button>
+					}</span>}
+				</button>
 				<a className="text-center -mt-4 text-sm" href="https://stripe.com" target={"_blank"}>Powered by <span className="font-bold text-tertiary-400">stripe</span></a>
-			</form>
+			</div>
 		</section>
 	);
 };

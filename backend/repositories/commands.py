@@ -1,4 +1,4 @@
-from database.connection import get_connection
+from database.connection import get_connection, release_connection
 from models import commands as model
 
 
@@ -6,13 +6,17 @@ def create_command(ref_client_: int):
     conn = get_connection()
     curs = conn.cursor()
 
-    curs.execute("""
-        INSERT INTO commands (ref_client) VALUES (%s)
-            RETURNING *
-    """, (ref_client_, ))
-    row = curs.fetchone()
+    try:
+        curs.execute("""
+            INSERT INTO commands (ref_client) VALUES (%s)
+                RETURNING *
+        """, (ref_client_, ))
+        row = curs.fetchone()
+        conn.commit()
 
-    conn.commit()
-    conn.close()
-
-    return model.Command(*row)
+        return model.Command(*row)
+    except Exception:
+        conn.rollback()
+        raise
+    finally:
+        release_connection(conn)

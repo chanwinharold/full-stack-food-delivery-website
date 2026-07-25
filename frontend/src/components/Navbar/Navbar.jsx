@@ -3,11 +3,11 @@ import { assets } from "../../assets/assets";
 import Button from '../Button/Button';
 import { Link } from "react-router";
 import {useContext, useEffect} from "react";
-import handleAuth from "../../services/auth.js";
+import handleAuth, {handleLogout} from "../../services/auth.js";
 import AlertContext from "../../contexts/AlertContext/AlertContext.js";
 import AuthContext from "../../contexts/AuthContext/AuthContext.js";
-import Cart from "../../pages/Cart/Cart.jsx";
 import CartContext from "../../contexts/CartContext/CartContext.js";
+import {useNavigate} from "react-router";
 
 
 function Navbar() {
@@ -15,12 +15,19 @@ function Navbar() {
     const {auth, setAuth} = useContext(AuthContext);
     const statesAuth = {setShowAlert, setStatus, setDetail}
     const {Cart} = useContext(CartContext);
+    const navigate = useNavigate();
 
     useEffect(() => {
         handleAuth(statesAuth).then(authRes => {
             setAuth(authRes)
         })
     }, []);
+
+    const logout = async () => {
+        await handleLogout();
+        setAuth(null);
+        navigate("/");
+    };
 
     return (
         <header className="sticky inset-x-0 bg-white z-10">
@@ -59,7 +66,13 @@ function Navbar() {
 
                     {!auth
                         ? <Button link={"/login"} className={"btn-primary-outlined rounded-xl"}>login</Button>
-                        : <img src="/icon_user.svg" alt="user profile image"/>}
+                        : <button
+                            onClick={logout}
+                            className="cursor-pointer px-4 py-1 text-sm font-medium rounded-xl border border-neutral-800 hover:bg-neutral-900 hover:text-white transition-colors"
+                        >
+                            logout
+                        </button>
+                    }
                 </div>
             </div>
         </header>

@@ -9,6 +9,7 @@ import MenuContext from "../../contexts/MenuContext/MenuContext.js";
 function Menu() {
 	const [currentID, setcurrentID] = useState(null);
 	const [FoodByCategory, setFoodByCategory] = useState([]);
+	const [loading, setLoading] = useState(true);
 	const {Menus, Foods, setFoods, setMenus} = useContext(MenuContext);
 
 	const handleChooseMenu = (id) => {
@@ -18,13 +19,49 @@ function Menu() {
 	}
 
 	useEffect(() => {
-		handleMenus().then(res => {
-			setMenus(res)
-		})
-		handleFoods().then(res => {
-			setFoods(res)
-		})
+		Promise.all([handleMenus(), handleFoods()]).then(([menus, foods]) => {
+			setMenus(menus || [])
+			setFoods(foods || [])
+		}).finally(() => setLoading(false));
 	}, []);
+
+	if (loading) {
+		return (
+			<main className="px-6 py-8 flex flex-col gap-8">
+				<div className="grid gap-2">
+					<h1 className="font-headline font-bold text-neutral-100 text-2xl">
+						Explore our menu
+					</h1>
+					<p className="text-sm text-neutral-200 max-w-2xl">
+						Discover a world of flavors. From crisp salads to decadent
+						desserts, our carefully curated menu offers something
+						delicious for every craving. Fresh ingredients, expertly
+						prepared.
+					</p>
+				</div>
+				<div className="flex gap-6 animate-pulse">
+					{Array.from({length: 8}).map((_, i) => (
+						<div key={i} className="grid place-items-center gap-2">
+							<div className="w-16 h-16 rounded-full bg-neutral-800"></div>
+							<div className="h-3 w-14 bg-neutral-800 rounded"></div>
+						</div>
+					))}
+				</div>
+				<div className="flex gap-6 flex-wrap">
+					{Array.from({length: 8}).map((_, i) => (
+						<article key={i} className="dish-component animate-pulse">
+							<div className="w-full h-37.5 bg-neutral-800"></div>
+							<div className="grid px-3 py-3 gap-3">
+								<div className="h-5 bg-neutral-800 rounded w-2/3"></div>
+								<div className="h-3 bg-neutral-800 rounded w-full"></div>
+								<div className="h-5 bg-neutral-800 rounded w-1/4"></div>
+							</div>
+						</article>
+					))}
+				</div>
+			</main>
+		);
+	}
 
 	return (
 		<main className="px-6 py-8 flex flex-col gap-8">

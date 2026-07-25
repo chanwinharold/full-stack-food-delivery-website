@@ -17,6 +17,14 @@ const handleAuth = async ({setShowAlert, setStatus, setDetail}) => {
 export default handleAuth;
 
 
+export const handleLogout = async () => {
+    await apiRequest("/auth/logout", "POST")
+    localStorage.removeItem("current_user")
+    localStorage.removeItem("cart")
+    return null
+}
+
+
 const setAuthToLocalStorage = (data) => {
     if (data) {
         delete data.id
