@@ -2,6 +2,7 @@ import os, dotenv
 
 dotenv.load_dotenv(dotenv_path=dotenv.find_dotenv())
 
+DATABASE_URL = os.getenv("DATABASE_URL")
 DB_HOST = os.getenv("DB_HOST")
 DB_USER = os.getenv("DB_USER")
 DB_NAME = os.getenv("DB_NAME")
