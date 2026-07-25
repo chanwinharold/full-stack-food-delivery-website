@@ -76,7 +76,7 @@ const Item = ({ food }) => {
 			<td className="py-4">
 				<img
 					className="w-16 h-16 object-cover object-center rounded-default m-auto"
-					src={`/src/assets/images/foods/${food.image}`}
+					src={`../../assets/images/foods/${food.image}`}
 					alt=""
 				/>
 			</td>
