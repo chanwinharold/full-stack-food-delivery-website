@@ -83,7 +83,7 @@ const ExploreMenuSection = () => {
 					<h1 className="font-headline font-bold text-neutral-100 text-2xl">
 						Explore our menu
 					</h1>
-					<p className="text-sm text-neutral-200 bg-red-500">
+					<p className="text-sm text-neutral-200">
 						Choose from a diverse menu featuring a delectable array
 						of dishes. Our mission is to satisfy your <br />
 						cravings and elevate your dining experience, one
