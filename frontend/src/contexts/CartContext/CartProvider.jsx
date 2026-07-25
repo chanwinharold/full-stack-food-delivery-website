@@ -77,6 +77,8 @@ const CartProvider = ({children}) => {
     }
 
     const clearCart = () => {
+        localStorage.removeItem("cart");
+        localStorage.removeItem("deliveryInfo");
         setCart([]);
         setDeliveryInfo(null);
         setTotal(0);

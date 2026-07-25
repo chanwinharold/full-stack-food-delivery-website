@@ -10,6 +10,16 @@ import {useNavigate} from "react-router";
 import {isGoodResponse} from "../../services/status.js";
 
 
+const TEST_CARD = {
+	email: "test@tomato.com",
+	number: "4242 4242 4242 4245",
+	expiry: "12/28",
+	cvc: "123",
+	name: "John Doe",
+	country: "United States",
+};
+
+
 function Payment() {
 	return (
 		<main className="payment-container">
@@ -100,12 +110,33 @@ const FormPayment = () => {
 	const {setShowAlert, setStatus, setDetail} = useContext(AlertContext);
 	const navigate = useNavigate();
 	const [loading, setLoading] = useState(false);
+	const [showConfirm, setShowConfirm] = useState(false);
+	const [paid, setPaid] = useState(false);
 
-	const handlePay = async () => {
+	const handlePayClick = () => {
+		if (paid) {
+			setShowAlert(true);
+			setStatus(400);
+			setDetail("This order has already been paid for.");
+			return;
+		}
+		setShowConfirm(true);
+	};
+
+	const confirmPay = async () => {
+		setShowConfirm(false);
+
 		if (!deliveryInfo) {
 			setShowAlert(true);
 			setStatus(400);
 			setDetail("Please complete delivery information first");
+			return;
+		}
+
+		if (paid) {
+			setShowAlert(true);
+			setStatus(400);
+			setDetail("This order has already been paid for.");
 			return;
 		}
 
@@ -133,8 +164,9 @@ const FormPayment = () => {
 			const response = await createOrder(orderPayload);
 
 			if (isGoodResponse(response.status)) {
+				setPaid(true);
 				clearCart();
-				navigate("/order");
+				navigate("/");
 			} else {
 				setShowAlert(true);
 				setStatus(response.status);
@@ -149,6 +181,8 @@ const FormPayment = () => {
 		}
 	};
 
+	const total = Total > 0 ? (Total + extra.deliveryFee + extra.taxes).toFixed(2) : (0).toFixed(2);
+
 	return (
 		<section className="p-8 flex flex-col gap-12 bg-neutral-950 w-full">
 			<h2 className="text-2xl font-medium">Pay with card</h2>
@@ -160,31 +194,33 @@ const FormPayment = () => {
 						type="email"
 						name="email"
 						id="pay-email"
-						placeholder="customer@example.com"
-						defaultValue={deliveryInfo?.email || ""}
+						defaultValue={TEST_CARD.email}
+						disabled
 					/>
 				</label>
 				<label className={"card-field"} htmlFor="card-number">
 					<span>Card information</span>
 					<div className="card-grid border rounded-default overflow-hidden">
 						<input className="col-span-2 bg-transparent border-b"
-							type="number"
+							type="text"
 							name="card-number"
 							id="card-number"
-							placeholder="Card number"
+							defaultValue={TEST_CARD.number}
+							disabled
 						/>
 						<input className="bg-transparent border-r"
-							type="month"
+							type="text"
 							name="expired-in"
 							id="expired-in"
-							placeholder="MM / YYYY"
+							defaultValue={TEST_CARD.expiry}
+							disabled
 						/>
 						<input className="bg-transparent"
-							type="number"
+							type="text"
 							name="cvc"
 							id="cvc"
-							placeholder="CVC"
-							max={999}
+							defaultValue={TEST_CARD.cvc}
+							disabled
 						/>
 					</div>
 				</label>
@@ -194,7 +230,8 @@ const FormPayment = () => {
 						type="text"
 						name="card-name"
 						id="card-name"
-						placeholder="Name on card"
+						defaultValue={TEST_CARD.name}
+						disabled
 					/>
 				</label>
 				<label className={"form-field"} htmlFor="card-country">
@@ -203,25 +240,41 @@ const FormPayment = () => {
 						type="text"
 						name="card-country"
 						id="card-country"
-						placeholder="United States"
-						defaultValue={deliveryInfo?.country || ""}
+						defaultValue={TEST_CARD.country}
+						disabled
 					/>
 				</label>
 
 				<button
-					onClick={handlePay}
+					onClick={handlePayClick}
 					disabled={loading || Cart.length === 0}
 					className="bg-tertiary-500 rounded-default inline-flex m-0 gap-2 items-center justify-center text-neutral-950 h-12 font-bold w-full cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
 				>
 					<IconLock />
 					<span>{loading ? "Processing..." : "Pay"}</span>
-					{!loading && <span>${Total > 0
-						? (Total + extra.deliveryFee + extra.taxes).toFixed(2)
-						: (0).toFixed(2)
-					}</span>}
+					{!loading && <span>${total}</span>}
 				</button>
 				<a className="text-center -mt-4 text-sm" href="https://stripe.com" target={"_blank"}>Powered by <span className="font-bold text-tertiary-400">stripe</span></a>
 			</div>
+
+		{showConfirm && (
+			<div className="confirm-overlay">
+				<div className="confirm-modal">
+					<h3>Confirm Payment</h3>
+					<p>
+						You are about to pay <strong>${total}</strong> using the test card ending in <strong>4245</strong>.
+					</p>
+					<div className="confirm-actions">
+						<button onClick={() => setShowConfirm(false)} className="btn-cancel">
+							Cancel
+						</button>
+						<button onClick={confirmPay} className="btn-confirm">
+							Confirm
+						</button>
+					</div>
+				</div>
+			</div>
+		)}
 		</section>
 	);
 };

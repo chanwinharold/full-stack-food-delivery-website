@@ -21,6 +21,7 @@ export const handleLogout = async () => {
     await apiRequest("/auth/logout", "POST")
     localStorage.removeItem("current_user")
     localStorage.removeItem("cart")
+    localStorage.removeItem("deliveryInfo")
     return null
 }
 

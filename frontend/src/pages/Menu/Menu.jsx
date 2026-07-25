@@ -1,6 +1,6 @@
 import "./Menu.css";
 import IconStar from "../../assets/components/IconStar";
-import {useContext, useEffect, useState} from "react";
+import {useContext, useEffect, useState, useMemo} from "react";
 import {handleFoods, handleMenus} from "../../services/api.js";
 import CartContext from "../../contexts/CartContext/CartContext.js";
 import MenuContext from "../../contexts/MenuContext/MenuContext.js";
@@ -10,9 +10,10 @@ function Menu() {
 	const [currentID, setcurrentID] = useState(null);
 	const [FoodByCategory, setFoodByCategory] = useState([]);
 	const [loading, setLoading] = useState(true);
-	const {Menus, Foods, setFoods, setMenus} = useContext(MenuContext);
+	const {Menus, Foods, setFoods, setMenus, searchQuery, setSearchQuery} = useContext(MenuContext);
 
 	const handleChooseMenu = (id) => {
+		setSearchQuery("");
 		const currentMenuFoods = Foods.filter(f => f.menu_id === id)
 		setFoodByCategory(currentMenuFoods)
 		setcurrentID(id)
@@ -24,6 +25,19 @@ function Menu() {
 			setFoods(foods || [])
 		}).finally(() => setLoading(false));
 	}, []);
+
+	const isSearching = searchQuery.trim().length > 0;
+
+	const displayedFoods = useMemo(() => {
+		if (isSearching) {
+			const q = searchQuery.toLowerCase();
+			return Foods.filter(f =>
+				f.name.toLowerCase().includes(q) ||
+				f.description.toLowerCase().includes(q)
+			);
+		}
+		return FoodByCategory.length ? FoodByCategory : Foods;
+	}, [isSearching, searchQuery, FoodByCategory, Foods]);
 
 	if (loading) {
 		return (
@@ -81,7 +95,7 @@ function Menu() {
 				{Menus.map(({id, name, image}) => (
 					<article
 						key={id}
-						className={`grid place-items-center gap-2 on-hover cursor-pointer ${currentID === id ? "on-focus" : ""}`}
+						className={`grid place-items-center gap-2 on-hover cursor-pointer ${!isSearching && currentID === id ? "on-focus" : ""}`}
 						onClick={() => handleChooseMenu(id)}
 					>
 						<img
@@ -96,10 +110,20 @@ function Menu() {
 				))}
 			</div>
 
+			{isSearching && (
+				<p className="text-sm text-neutral-400">
+					{displayedFoods.length} result{displayedFoods.length !== 1 ? "s" : ""} for "{searchQuery}"
+				</p>
+			)}
+
 			<div className="flex gap-6 flex-wrap">
-				{(FoodByCategory.length ? FoodByCategory : Foods).map(f => (
-					<Dish key={f.id} food={f} />
-				))}
+				{displayedFoods.length > 0 ? (
+					displayedFoods.map(f => (
+						<Dish key={f.id} food={f} />
+					))
+				) : (
+					<p className="text-neutral-400 py-8">No dishes found matching your search.</p>
+				)}
 			</div>
 		</main>
 	);
