@@ -49,6 +49,7 @@
 	--color-neutral-800: #E2E2E2 !important;
 	--color-neutral-900: #F1F1F1 !important;
 	--color-neutral-950: #FFFFFF !important;
+	--color-red-500: lime;
 
 	--radius-sm: 0.25rem;
 	--radius-default: 0.5rem;
