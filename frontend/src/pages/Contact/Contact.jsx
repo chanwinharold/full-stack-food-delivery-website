@@ -1,6 +1,8 @@
 import { assets } from "../../assets/assets";
 import "./Contact.css";
-import Button from '../../components/Button/Button';
+import {useContext, useState} from "react";
+import AlertContext from "../../contexts/AlertContext/AlertContext.js";
+import Alert from "../../components/AlertPopup/Alert.jsx";
 
 
 function Contact() {
@@ -79,61 +81,104 @@ const Infos = () => {
 };
 
 const Form = () => {
+	const {showAlert, setShowAlert, status, setStatus, detail, setDetail} = useContext(AlertContext);
+	const [inputs, setInputs] = useState({});
+	const [sending, setSending] = useState(false);
+
+	const handleChange = (e) => {
+		const {name, value} = e.target;
+		setInputs(prev => ({...prev, [name]: value}));
+	};
+
+	const handleSubmit = (e) => {
+		e.preventDefault();
+		setSending(true);
+
+		setTimeout(() => {
+			setSending(false);
+			setInputs({});
+			setShowAlert(true);
+			setStatus(200);
+			setDetail("Your message has been sent successfully! We'll get back to you within 24 hours.");
+		}, 1000);
+	};
+
 	return (
-		<form className="form-container relative overflow-hidden">
-			<div className="bg-circle"></div>
+		<>
+			{showAlert && <Alert setter={setShowAlert} status={status}>{detail}</Alert>}
+			<form onSubmit={handleSubmit} className="form-container relative overflow-hidden">
+				<div className="bg-circle"></div>
 
-			<h2 className="text-[24px] font-medium">Send a Message</h2>
-			<div className="grid gap-6">
-				<fieldset className="grid grid-cols-2 gap-6">
-					<legend className="hidden" aria-hidden="true">
-						User Infos
-					</legend>
-					<label className="form-field" htmlFor="name">
-						<span>First name</span>
-						<input
-							type="text"
-							name="name"
-							id="name"
-							placeholder="John Doe"
-						/>
-					</label>
-					<label className="form-field" htmlFor="email">
-						<span>Email</span>
-						<input
-							type="email"
-							name="email"
-							id="email"
-							placeholder="john@example.com"
-						/>
-					</label>
-				</fieldset>
-				<fieldset className="grid gap-6">
-					<legend className="hidden" aria-hidden="true">
-						User message
-					</legend>
-					<label className="form-field" htmlFor="subject">
-						<span>Subject</span>
-						<input
-							type="text"
-							name="subject"
-							id="subject"
-							placeholder="How can we help?"
-						/>
-					</label>
-					<label className="form-field" htmlFor="message">
-						<span>Message</span>
-						<textarea
-							className="h-30 py-2"
-							name="message"
-							id="message"
-							placeholder="Tell us more about your inquiry..."
-						/>
-					</label>
-				</fieldset>
+				<h2 className="text-[24px] font-medium">Send a Message</h2>
+				<div className="grid gap-6">
+					<fieldset className="grid grid-cols-2 gap-6">
+						<legend className="hidden" aria-hidden="true">
+							User Infos
+						</legend>
+						<label className="form-field" htmlFor="name">
+							<span>First name</span>
+							<input
+								type="text"
+								name="name"
+								id="name"
+								placeholder="John Doe"
+								value={inputs.name || ""}
+								onChange={handleChange}
+								required
+							/>
+						</label>
+						<label className="form-field" htmlFor="email">
+							<span>Email</span>
+							<input
+								type="email"
+								name="email"
+								id="email"
+								placeholder="john@example.com"
+								value={inputs.email || ""}
+								onChange={handleChange}
+								required
+							/>
+						</label>
+					</fieldset>
+					<fieldset className="grid gap-6">
+						<legend className="hidden" aria-hidden="true">
+							User message
+						</legend>
+						<label className="form-field" htmlFor="subject">
+							<span>Subject</span>
+							<input
+								type="text"
+								name="subject"
+								id="subject"
+								placeholder="How can we help?"
+								value={inputs.subject || ""}
+								onChange={handleChange}
+								required
+							/>
+						</label>
+						<label className="form-field" htmlFor="message">
+							<span>Message</span>
+							<textarea
+								className="h-30 py-2"
+								name="message"
+								id="message"
+								placeholder="Tell us more about your inquiry..."
+								value={inputs.message || ""}
+								onChange={handleChange}
+								required
+							/>
+						</label>
+					</fieldset>
 
-				<Button className={"btn-primary w-full rounded-full h-12 inline-grid place-content-center font-bold bg-primary-400 border-primary-400 shadow-xl hover:shadow-primary-400 hover:bg-primary-600 hover:border-primary-600"} type="submit">Send Message</Button>
-			</div>
-		</form>
+					<button
+						type="submit"
+						disabled={sending}
+						className="btn btn-primary w-full rounded-full h-12 inline-grid place-content-center font-bold bg-primary-400 border-primary-400 shadow-xl hover:shadow-primary-400 hover:bg-primary-600 hover:border-primary-600 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+					>
+						{sending ? "Sending..." : "Send Message"}
+					</button>
+				</div>
+			</form>
+		</>
 	);
 };

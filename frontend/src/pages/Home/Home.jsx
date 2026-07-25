@@ -63,6 +63,7 @@ const HeroSection = () => {
 
 const ExploreMenuSection = () => {
 	const [Menus, setMenus] = useState([])
+	const [loading, setLoading] = useState(true)
 
 	const handleGetMenus = async () => {
 		const menus = await apiRequest("/menus", "GET")
@@ -71,9 +72,8 @@ const ExploreMenuSection = () => {
 
 	useEffect(() => {
 		handleGetMenus().then(res => {
-			setMenus(res)
-		})
-
+			setMenus(res || [])
+		}).finally(() => setLoading(false))
 	}, []);
 
 	return (
@@ -91,21 +91,30 @@ const ExploreMenuSection = () => {
 					</p>
 				</div>
 				<div className="flex gap-6">
-					{Menus.map(({id, name, image}) => (
-						<article
-							key={id}
-							className="grid place-items-center gap-2 on-hover cursor-pointer"
-						>
-							<img
-								className="w-20 h-20 rounded-full border-3 border-transparent"
-								src={`/src/assets/images/menus/${image}`}
-								alt={`${name} image`}
-							/>
-							<span className="text-sm capitalize">
-								{name}
-							</span>
-						</article>
-					))}
+					{loading ? (
+						Array.from({length: 8}).map((_, i) => (
+							<div key={i} className="grid place-items-center gap-2 animate-pulse">
+								<div className="w-20 h-20 rounded-full bg-neutral-800"></div>
+								<div className="h-3 w-16 bg-neutral-800 rounded"></div>
+							</div>
+						))
+					) : (
+						Menus.map(({id, name, image}) => (
+							<article
+								key={id}
+								className="grid place-items-center gap-2 on-hover cursor-pointer"
+							>
+								<img
+									className="w-20 h-20 rounded-full border-3 border-transparent"
+									src={`/src/assets/images/menus/${image}`}
+									alt={`${name} image`}
+								/>
+								<span className="text-sm capitalize">
+									{name}
+								</span>
+							</article>
+						))
+					)}
 				</div>
 			</div>
 		</section>
@@ -114,6 +123,7 @@ const ExploreMenuSection = () => {
 
 const TopDishesSection = () => {
 	const [Foods, setFoods] = useState([])
+	const [loading, setLoading] = useState(true)
 
 	const handleFoods = async () => {
 		const response = await apiRequest("/dishes/top", "GET")
@@ -122,8 +132,8 @@ const TopDishesSection = () => {
 
 	useEffect(() => {
 		handleFoods().then(res => {
-			setFoods(res)
-		})
+			setFoods(res || [])
+		}).finally(() => setLoading(false))
 	}, []);
 
 	return (
@@ -134,9 +144,22 @@ const TopDishesSection = () => {
 				</h1>
 
 				<div className="flex gap-6 flex-wrap">
-					{Foods.map(f => (
-						<Dish key={f.id} food={f} />
-					))}
+					{loading ? (
+						Array.from({length: 6}).map((_, i) => (
+							<article key={i} className="dish-component animate-pulse">
+								<div className="w-full h-37.5 bg-neutral-800"></div>
+								<div className="grid px-3 py-3 gap-3">
+									<div className="h-5 bg-neutral-800 rounded w-2/3"></div>
+									<div className="h-3 bg-neutral-800 rounded w-full"></div>
+									<div className="h-5 bg-neutral-800 rounded w-1/4"></div>
+								</div>
+							</article>
+						))
+					) : (
+						Foods.map(f => (
+							<Dish key={f.id} food={f} />
+						))
+					)}
 				</div>
 			</div>
 		</section>

@@ -1,26 +1,59 @@
 import "./Navbar.css";
 import { assets } from "../../assets/assets";
 import Button from '../Button/Button';
-import { Link } from "react-router";
-import {useContext, useEffect} from "react";
-import handleAuth from "../../services/auth.js";
+import { Link, useLocation } from "react-router";
+import {useContext, useEffect, useState} from "react";
+import handleAuth, {handleLogout} from "../../services/auth.js";
 import AlertContext from "../../contexts/AlertContext/AlertContext.js";
 import AuthContext from "../../contexts/AuthContext/AuthContext.js";
-import Cart from "../../pages/Cart/Cart.jsx";
 import CartContext from "../../contexts/CartContext/CartContext.js";
+import MenuContext from "../../contexts/MenuContext/MenuContext.js";
+import {useNavigate} from "react-router";
 
 
 function Navbar() {
     const {setShowAlert, setDetail, setStatus} = useContext(AlertContext);
     const {auth, setAuth} = useContext(AuthContext);
     const statesAuth = {setShowAlert, setStatus, setDetail}
-    const {Cart} = useContext(CartContext);
+    const {Cart, clearCart} = useContext(CartContext);
+    const {searchQuery, setSearchQuery} = useContext(MenuContext);
+    const navigate = useNavigate();
+    const location = useLocation();
+    const [searchOpen, setSearchOpen] = useState(false);
+    const isMenuPage = location.pathname === "/menu";
 
     useEffect(() => {
         handleAuth(statesAuth).then(authRes => {
             setAuth(authRes)
         })
     }, []);
+
+    const logout = async () => {
+        await handleLogout();
+        clearCart();
+        setAuth(null);
+        setSearchQuery("");
+        navigate("/");
+    };
+
+    const toggleSearch = () => {
+        if (searchOpen) {
+            setSearchOpen(false);
+            setSearchQuery("");
+        } else {
+            setSearchOpen(true);
+            if (!isMenuPage) {
+                navigate("/menu");
+            }
+        }
+    };
+
+    const handleSearchChange = (e) => {
+        setSearchQuery(e.target.value);
+        if (!isMenuPage) {
+            navigate("/menu");
+        }
+    };
 
     return (
         <header className="sticky inset-x-0 bg-white z-10">
@@ -40,8 +73,23 @@ function Navbar() {
                 </nav>
 
                 <div className="flex items-center gap-6">
-                    <div>
-                        <img className={"cursor-pointer"} src={`${assets.icon_search}`} alt="search icon"/>
+                    <div className="relative flex items-center">
+                        {searchOpen && (
+                            <input
+                                autoFocus
+                                type="text"
+                                value={searchQuery}
+                                onChange={handleSearchChange}
+                                placeholder="Search dishes..."
+                                className="h-9 w-48 pr-2 pl-3 text-sm rounded-full border border-neutral-300 bg-neutral-950 focus:outline-none focus:border-primary-500 transition-colors"
+                            />
+                        )}
+                        <img
+                            className={`cursor-pointer ${searchOpen ? "ml-1" : ""}`}
+                            onClick={toggleSearch}
+                            src={`${assets.icon_search}`}
+                            alt="search icon"
+                        />
                     </div>
                     <div className={"relative"}>
                         <Link to={"/cart"}>
@@ -59,7 +107,13 @@ function Navbar() {
 
                     {!auth
                         ? <Button link={"/login"} className={"btn-primary-outlined rounded-xl"}>login</Button>
-                        : <img src="/icon_user.svg" alt="user profile image"/>}
+                        : <button
+                            onClick={logout}
+                            className="cursor-pointer px-4 py-1 text-sm font-medium rounded-xl border border-neutral-800 hover:bg-neutral-900 hover:text-white transition-colors"
+                        >
+                            logout
+                        </button>
+                    }
                 </div>
             </div>
         </header>

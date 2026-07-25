@@ -4,9 +4,10 @@ import MenuContext from "./MenuContext.js";
 function MenuProvider({children}) {
 	const [Menus, setMenus] = useState([]);
 	const [Foods, setFoods] = useState([]);
+	const [searchQuery, setSearchQuery] = useState("");
 
     const states = {
-        Menus, setMenus, Foods, setFoods
+        Menus, setMenus, Foods, setFoods, searchQuery, setSearchQuery
     }
 
     return (
