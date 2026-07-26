@@ -21,7 +21,7 @@ def login(user_: schema.UserLoginRequest, response: Response):
         value=token_,
         httponly=True,
         secure=COOKIE_SECURE,
-        samesite="lax",
+        samesite="none",
         max_age=int(JWT_EXPIRES_IN * 60)
     )
 
